@@ -18,7 +18,7 @@ import static org.hamcrest.Matchers.containsString;
 import static org.junit.Assert.*;
 
 /**
- * Instrumentation test, which will execute on an Android device.
+ * Instrumentation test for step counter activity.
  *
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
