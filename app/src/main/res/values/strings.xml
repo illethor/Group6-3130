@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">My Application</string>
+    <string-array name="graphs_array">
+        <item>Workout 1</item>
+        <item>Workout 2</item>
+        <item>Workout 3</item>
+    </string-array>
 </resources>
