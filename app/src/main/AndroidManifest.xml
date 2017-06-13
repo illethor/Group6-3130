@@ -17,6 +17,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".timer"></activity>
+        <activity android:name=".GraphActivity"></activity>
     </application>
 
 </manifest>
