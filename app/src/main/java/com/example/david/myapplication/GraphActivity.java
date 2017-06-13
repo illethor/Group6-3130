@@ -1,5 +1,6 @@
 package com.example.david.myapplication;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
@@ -103,6 +104,10 @@ public class GraphActivity extends AppCompatActivity {
             System.out.println("There was a problem: " + e);
         }
         return coordCount;
+    }
+
+    public void graphToMain(View v) {
+        startActivity(new Intent(GraphActivity.this, MainActivity.class));
     }
 
     //Generates series data based on text file specified
