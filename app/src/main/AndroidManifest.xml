@@ -17,6 +17,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".StepCounterActivity"></activity>
+        <activity android:name=".AlertActivity"></activity>
+        <activity android:name=".timer"></activity>
+        <activity android:name=".GraphActivity"></activity>
     </application>
 
 </manifest>
