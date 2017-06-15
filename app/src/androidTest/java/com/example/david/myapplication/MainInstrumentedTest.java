@@ -52,6 +52,13 @@ public class MainInstrumentedTest {
     }
 
     @Test
+    public void button5Test() throws Exception{
+        //Checks the button is there by clicking it
+        onView(withId(R.id.button5))
+                .perform(click());
+    }
+
+    @Test
     public void button6Test() throws Exception{
         //Checks the button is there by clicking it
         onView(withId(R.id.stepCounterBtn))
