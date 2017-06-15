@@ -9,7 +9,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import 	android.os.CountDownTimer;
 
-public class timer extends AppCompatActivity {
+public class TimerActivity extends AppCompatActivity {
     public TextView timeS;
     public TextView timeM;
     public String stringS="";
@@ -71,7 +71,8 @@ public class timer extends AppCompatActivity {
         });
     }
     public void sendMessageReset(View view) {
-        Intent intent = new Intent(this, timer.class);
+        Intent intent = new Intent(this, TimerActivity.class);
+        finish();
         startActivity(intent);
     }
     public void sendMessageReturn(View view) {

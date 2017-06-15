@@ -5,14 +5,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.view.View;
-import android.widget.Button;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -21,7 +13,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        /*Button stepBtn = (Button)findViewById(R.id.stepCounterBtn);
+        Button stepBtn = (Button)findViewById(R.id.stepCounterBtn);
 
         stepBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -31,19 +23,19 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        Button Alert = (Button)findViewById(R.id.button);
+        Button Alert = (Button)findViewById(R.id.button3);
 
         Alert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, AlertActivity.class));
             }
-        });*/
+        });
 
     }
 
     public void sendMessage(View view) {
-        Intent intent = new Intent(this, timer.class);
+        Intent intent = new Intent(this, TimerActivity.class);
         startActivity(intent);
     }
 

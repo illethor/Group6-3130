@@ -30,7 +30,7 @@ import static org.hamcrest.core.IsInstanceOf.instanceOf;
 
 
 
-public class GATest {
+public class GraphInstrumentedTest {
 
     /**
      * Matches an item from an AdapterView with a specific String.

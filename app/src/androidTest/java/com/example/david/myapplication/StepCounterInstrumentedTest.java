@@ -19,8 +19,6 @@ import static org.junit.Assert.*;
 
 /**
  * Instrumentation test for step counter activity.
- *
- * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
 @RunWith(AndroidJUnit4.class)
 public class StepCounterInstrumentedTest {

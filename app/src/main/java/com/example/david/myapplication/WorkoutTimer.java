@@ -6,12 +6,13 @@ package com.example.david.myapplication;
 
 import java.util.Timer;
 import java.util.TimerTask;
-public class timerTask{
+
+public class WorkoutTimer {
     String message;
     int secondsPassed = 0;
 
-    Timer timer = new Timer();
-    TimerTask task = new TimerTask(){
+    java.util.Timer timer = new java.util.Timer();
+    java.util.TimerTask task = new java.util.TimerTask(){
         public void run(){
             secondsPassed++;
             message = "Seconds passed: "+1;
@@ -21,7 +22,7 @@ public class timerTask{
         timer.scheduleAtFixedRate(task, 1000, 1000);
     }
     /*public static void main(String[] args){
-        timer timer1 = new timer();
+        TimerActivity timer1 = new TimerActivity();
         timer1.start();
     }*/
 }

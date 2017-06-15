@@ -9,11 +9,11 @@ import static org.junit.Assert.assertEquals;
  * Created by Wenlong on 2017/5/26.
  */
 
-public class JUnitTest {
+public class TimerUnitTest {
 
     @Test
     public void RangeTest() throws Exception {
-        timer t1 = new timer();
+        TimerActivity t1 = new TimerActivity();
 
     }
 }
