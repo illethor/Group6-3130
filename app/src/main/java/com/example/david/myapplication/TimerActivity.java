@@ -79,6 +79,11 @@ public class TimerActivity extends AppCompatActivity {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
+    /**
+     * Method which handles the seconds and minutes displayed base on parameter values.
+     * @param S The number of seconds.
+     * @param M The number of minutes.
+     * */
     public void RangeOfTime(int S, int M){
         if (S < 9) {
             S++;

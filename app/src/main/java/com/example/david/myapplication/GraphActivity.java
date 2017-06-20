@@ -94,7 +94,10 @@ public class GraphActivity extends AppCompatActivity {
         });
     }
 
-    //Method calculates specified file's line count (aka coord pairs count)
+    /**
+     * Method calculates specified file's line count (aka coord pairs count.
+     * @return An integer representing the coord amount
+     * */
     public int coordAmount(){
         BufferedReader in;
         int coordCount = 0;
@@ -110,12 +113,17 @@ public class GraphActivity extends AppCompatActivity {
         }
         return coordCount;
     }
-
+    /**
+     * Initiates a graph object given a view.
+     * @param v The view for the graph.
+     * */
     public void graphToMain(View v) {
         startActivity(new Intent(GraphActivity.this, MainActivity.class));
     }
 
-    //Generates series data based on text file specified
+    /**
+     * Generates a set of Data Points given a text file with coordinates.
+     * */
     public DataPoint[] generateData(){
         BufferedReader in;
         int[] xArray = new int[coordAmount()];

@@ -34,15 +34,24 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Method which switches our view to the timer activity upon button press.
+     * */
     public void sendMessage(View view) {
         Intent intent = new Intent(MainActivity.this, TimerActivity.class);
         startActivity(intent);
     }
 
+    /**
+     * Method which sends us to the graph activity when button is pressed.
+     * */
     public void toGraphs(View v) {
         startActivity(new Intent(MainActivity.this, GraphActivity.class));
     }
 
+    /**
+     * Method which sends us to the set ranges activity when button is pressed.
+     * */
     public void toSetRanges(View view){
         Intent intent = new Intent(MainActivity.this, SetRangesActivity.class);
         startActivity(intent);

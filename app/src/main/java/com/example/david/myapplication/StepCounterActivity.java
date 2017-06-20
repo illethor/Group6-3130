@@ -20,7 +20,9 @@ public class StepCounterActivity extends AppCompatActivity implements SensorEven
 
     int stepsTaken = -1; // Start at -1 because it seems that the boot up of the sensor triggers
                          // the step counter event.
-
+    /**
+     * Upon activity creation will attempt to connect to the sensor service for step tracking.
+     * */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +33,9 @@ public class StepCounterActivity extends AppCompatActivity implements SensorEven
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
     }
 
+    /**
+     * When resumed will attempt to reconnect to the sensor to get data.
+     * */
     @Override
     protected void onResume() {
         super.onResume();

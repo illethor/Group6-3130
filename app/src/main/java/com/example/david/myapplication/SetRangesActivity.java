@@ -47,6 +47,9 @@ public class SetRangesActivity extends AppCompatActivity {
             }
         });
     }
+    /**
+     * Method which actually sets the specified ranges input by the user.
+     * */
     public void applyRanges(View v) {
 
         EditText etLowerBound = (EditText) findViewById(R.id.etLowerBound);
