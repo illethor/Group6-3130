@@ -20,7 +20,12 @@
         <activity android:name=".AlertActivity" />
         <activity android:name=".TimerActivity" />
         <activity android:name=".GraphActivity" />
-        <activity android:name=".SetRangesActivity"></activity>
+        <activity android:name=".SetRangesActivity" />
+        <activity
+            android:name=".LoginActivity"
+            android:exported="true" />
+        <activity android:name=".RegisterActivity"
+            android:parentActivityName=".LoginActivity"/>
     </application>
 
 </manifest>
