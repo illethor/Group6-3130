@@ -10,4 +10,8 @@
         <item>Workout 2</item>
         <item>Workout 3</item>
     </string-array>
+    <string-array name="activities_array">
+        <item>Run</item>
+        <item>Walk</item>
+    </string-array>
 </resources>

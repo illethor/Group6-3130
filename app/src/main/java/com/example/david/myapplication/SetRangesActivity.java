@@ -12,7 +12,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
 
 public class SetRangesActivity extends AppCompatActivity {
 
-    String infoToTrack;
+    String infoToTrack, activity;
     int lowerBound, upperBound;
 
     @Override
@@ -27,16 +27,34 @@ public class SetRangesActivity extends AppCompatActivity {
             }
         });
 
-        //Attach spinner to created spinner object
+        //Attach spinners to created spinner objects
         Spinner spnInfo = (Spinner) findViewById(R.id.spnInfo);
-        // Create an ArrayAdapter using the string array and a default spinner layout
+        Spinner spnActivity = (Spinner) findViewById(R.id.spnActivity);
+
+        // Create ArrayAdapters using the string arrays and a default spinner layout
         ArrayAdapter<CharSequence> adapterInfo = ArrayAdapter.createFromResource(this, R.array.infoToTrack_array, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> adapterActivity = ArrayAdapter.createFromResource(this, R.array.activities_array, android.R.layout.simple_spinner_item);
+
         // Specify the layout to use when the list of choices appears
         adapterInfo.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Apply the adapter to the spinner
-        spnInfo.setAdapter(adapterInfo);
+        adapterActivity.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        //Spinner listener
+        // Apply the adapters to the spinners
+        spnInfo.setAdapter(adapterInfo);
+        spnActivity.setAdapter(adapterActivity);
+
+        //spnActivity listener
+        spnActivity.setOnItemSelectedListener(new OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                //Retrieves selected item
+                activity = parent.getItemAtPosition(position).toString(); //this is your selected item
+            }
+            public void onNothingSelected(AdapterView<?> parent) {
+                return;
+            }
+        });
+
+        //spnInfo listener
         spnInfo.setOnItemSelectedListener(new OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 //Retrieves selected item
@@ -62,7 +80,7 @@ public class SetRangesActivity extends AppCompatActivity {
             //error message
         }
         else{
-            //send infoToTrack, lowerBound, and upperBound for use with alert dialog
+            //send activity, infoToTrack, lowerBound, and upperBound for use with alert dialog
         }
     }
 
