@@ -23,8 +23,8 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 
 public class RegisterTests {
     @Rule
-    public final ActivityTestRule<LoginActivity> mActivityRule =
-            new ActivityTestRule<>(LoginActivity.class);
+    public final ActivityTestRule<RegisterActivity> mActivityRule =
+            new ActivityTestRule<>(RegisterActivity.class);
     // Verify all buttons and fields are there by simply clicking on them
     @Test
     public void testEmailField(){

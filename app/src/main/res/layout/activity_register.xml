@@ -27,46 +27,46 @@
         android:id="@+id/txtEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="email address"
-        tools:layout_constraintTop_creator="1"
-        tools:layout_constraintRight_creator="1"
-        app:layout_constraintRight_toRightOf="parent"
         android:layout_marginTop="44dp"
+        android:ems="10"
+        android:hint="email address"
+        android:inputType="textPersonName"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/titleRegistration"
         tools:layout_constraintLeft_creator="1"
-        app:layout_constraintLeft_toLeftOf="parent" />
+        tools:layout_constraintRight_creator="1"
+        tools:layout_constraintTop_creator="1" />
 
     <EditText
         android:id="@+id/txtPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="password"
-        tools:layout_constraintTop_creator="1"
-        tools:layout_constraintRight_creator="1"
-        app:layout_constraintRight_toRightOf="@+id/txtEmail"
         android:layout_marginTop="32dp"
+        android:ems="10"
+        android:hint="password"
+        android:inputType="textPersonName"
+        app:layout_constraintLeft_toLeftOf="@+id/txtEmail"
+        app:layout_constraintRight_toRightOf="@+id/txtEmail"
         app:layout_constraintTop_toBottomOf="@+id/txtEmail"
         tools:layout_constraintLeft_creator="1"
-        app:layout_constraintLeft_toLeftOf="@+id/txtEmail" />
+        tools:layout_constraintRight_creator="1"
+        tools:layout_constraintTop_creator="1" />
 
     <EditText
         android:id="@+id/txtCoachEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="coach email (optional)"
-        tools:layout_constraintTop_creator="1"
-        tools:layout_constraintRight_creator="1"
-        app:layout_constraintRight_toRightOf="@+id/txtPassword"
         android:layout_marginTop="26dp"
+        android:ems="10"
+        android:hint="coach email (optional)"
+        android:inputType="textPersonName"
+        app:layout_constraintLeft_toLeftOf="@+id/txtPassword"
+        app:layout_constraintRight_toRightOf="@+id/txtPassword"
         app:layout_constraintTop_toBottomOf="@+id/txtPassword"
         tools:layout_constraintLeft_creator="1"
-        app:layout_constraintLeft_toLeftOf="@+id/txtPassword" />
+        tools:layout_constraintRight_creator="1"
+        tools:layout_constraintTop_creator="1" />
 
     <TextView
         android:id="@+id/dtxtNote"
@@ -97,19 +97,5 @@
         tools:layout_constraintLeft_creator="1"
         android:layout_marginBottom="59dp"
         app:layout_constraintLeft_toLeftOf="parent" />
-
-    <TextView
-        android:id="@+id/dtxtPassword"
-        android:layout_width="0dp"
-        android:layout_height="23dp"
-        android:text="Password must be 6 or more characters"
-        tools:layout_constraintTop_creator="1"
-        tools:layout_constraintRight_creator="1"
-        tools:layout_constraintBottom_creator="1"
-        app:layout_constraintBottom_toBottomOf="@+id/txtCoachEmail"
-        app:layout_constraintRight_toRightOf="@+id/txtPassword"
-        android:layout_marginTop="43dp"
-        android:layout_marginBottom="46dp"
-        app:layout_constraintTop_toTopOf="@+id/txtPassword" />
 
 </android.support.constraint.ConstraintLayout>

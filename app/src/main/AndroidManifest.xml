@@ -26,7 +26,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".RegisterActivity"
-            android:parentActivityName=".LoginActivity"/>
+            android:parentActivityName=".LoginActivity"
+            android:exported="true"/>
     </application>
 
 </manifest>

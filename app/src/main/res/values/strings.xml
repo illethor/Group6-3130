@@ -14,4 +14,8 @@
     <string name="passwordTooSmall">Password entered must be 6 or more characters</string>
     <string name="passwordEmpty">Must enter a password</string>
     <string name="emailEmpty">Must enter an email address</string>
+    <string name="registrationFailed">Registration has failed, please check for valid email, or email is not already in use.</string>
+    <string name="coachEmailDNE">"Coach email does not exist in database"</string>
+    <string name="userNotACoach">"The coach email specified is not a coach, please type a new coach email"</string>
+    <string name="coachHasAthelete">"The coach email specified is already assigned to an athelete, plaese type a new coach email</string>
 </resources>
