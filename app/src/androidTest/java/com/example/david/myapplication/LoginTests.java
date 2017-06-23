@@ -1,7 +1,11 @@
 package com.example.david.myapplication;
 
+import android.os.SystemClock;
 import android.support.test.rule.ActivityTestRule;
 
+import com.google.firebase.auth.FirebaseAuth;
+
+import org.junit.AfterClass;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -12,18 +16,13 @@ import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static android.support.test.espresso.intent.Intents.intended;
-import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
+import static junit.framework.Assert.fail;
 
 public class LoginTests {
-    // Messages
-    String FAILED_LOGIN_MESSAGE = "Incorrect Login Information";
-
     // Start the LoginActivity
     @Rule
     public final ActivityTestRule<LoginActivity> mActivityRule =
             new ActivityTestRule<>(LoginActivity.class);
-
     // Begin verifying all buttons and text fields are displaying and clickable
     @Test
     public void checkEmailField(){
@@ -41,7 +40,22 @@ public class LoginTests {
     public void checkSignupBtn(){
         onView(withId(R.id.btnSignup)).perform(click());
     }
-
+    // Verify correct error messages are displaying with blank email & password
+    @Test
+    public void noEmailEntered(){
+        onView(withId(R.id.btnLogin)).perform(click());
+        onView(withId(R.id.txtStatusMessage)).check(matches(withText(R.string.emailEmpty)));
+    }
+    @Test
+    public void noPasswordEntered(){
+        // Dummy email variable
+        String email = "badEmail@email.com";
+        // Set email so password verification fails
+        onView(withId(R.id.txtEmail)).perform(typeText(email)).perform(closeSoftKeyboard());
+        // Attempt to sign in
+        onView(withId(R.id.btnLogin)).perform(click());
+        onView(withId(R.id.txtStatusMessage)).check(matches(withText(R.string.passwordEmpty)));
+    }
     // Verify login is functioning -- When all these tests pass login is working properly
     @Test
     public void failedLoginTest(){
@@ -50,31 +64,36 @@ public class LoginTests {
         String password = "badPassword";
         // Attempt to login with them
         onView(withId(R.id.txtEmail)).perform(typeText(email)).perform(closeSoftKeyboard());
-        onView(withId(R.id.txtPassword)).perform(typeText(password)).perform(closeSoftKeyboard());;
+        onView(withId(R.id.txtPassword)).perform(typeText(password)).perform(closeSoftKeyboard());
         onView(withId(R.id.btnLogin)).perform(click());
+        // Avoid any race condition errors by waiting to confirm log in attempt happens
+        SystemClock.sleep(1500);
         // Verify status message is displaying "Incorrect Login Information"
-        onView(withId(R.id.txtStatusMessage)).check(matches(withText(FAILED_LOGIN_MESSAGE)));
+        onView(withId(R.id.txtStatusMessage)).check(matches(withText(R.string.failedLogin)));
     }
     @Test
-    public void testSucessfulLogin(){
+    public void testSuccessfulLogin(){
         // Create valid login credentials for a dummy account
         String email = "test@testuser.com";
         String password = "testuser";
         // Attempt to login with them
         onView(withId(R.id.txtEmail)).perform(typeText(email)).perform(closeSoftKeyboard());
-        onView(withId(R.id.txtPassword)).perform(typeText(password)).perform(closeSoftKeyboard());;
+        onView(withId(R.id.txtPassword)).perform(typeText(password)).perform(closeSoftKeyboard());
         onView(withId(R.id.btnLogin)).perform(click());
-        // Verify the activity switched to main activity which will only happen after successful login
-        intended(hasComponent(MainActivity.class.getName()));
+        // Create a wait to avoid any race conditions
+        SystemClock.sleep(1500);
+        // Check if we have a currentUser if we do we have successfully signed in
+        if(FirebaseAuth.getInstance().getCurrentUser() == null){
+            fail();
+        } else {
+            // If we sign in successfully make sure to end session and go back to main screen
+            FirebaseAuth.getInstance().signOut();
+        }
     }
-
-    // Verify sign up is functioning -- When all these below tests pass signup is working properly
-    @Test
-    public void testSignupBtnPress(){
-        // Press signup btn
-        onView(withId(R.id.btnSignup)).perform(click());
-        // Verify the activity has switched to the register activity below
-        intended(hasComponent(RegisterActivity.class.getName()));
+    // Clean-up after all tests have completed
+    @AfterClass
+    public static void tearDown(){
+        FirebaseAuth.getInstance().signOut();
     }
 
 }

@@ -10,4 +10,8 @@
         <item>Workout 2</item>
         <item>Workout 3</item>
     </string-array>
+    <string name="failedLogin">Incorrect Login Information</string>
+    <string name="passwordTooSmall">Password entered must be 6 or more characters</string>
+    <string name="passwordEmpty">Must enter a password</string>
+    <string name="emailEmpty">Must enter an email address</string>
 </resources>
