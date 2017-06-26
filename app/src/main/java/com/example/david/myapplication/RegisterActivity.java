@@ -157,6 +157,7 @@ public class RegisterActivity extends AppCompatActivity {
                             // Store user in fire base database
                             databaseArtists.child(cleanEmail(txtEmail)).setValue(objUser);
                             alreadyRegistered = true;
+                            startActivity(new Intent(RegisterActivity.this, MainActivity.class));
                         }
                     }
                 });
