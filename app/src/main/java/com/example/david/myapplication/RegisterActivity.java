@@ -167,6 +167,6 @@ public class RegisterActivity extends AppCompatActivity {
      * Removes the dot from an email for database storage
      * */
     public String cleanEmail(EditText email){
-        return email.getText().toString().replaceFirst("\\.","");
+        return email.getText().toString().replaceAll("\\.","");
     }
 }
