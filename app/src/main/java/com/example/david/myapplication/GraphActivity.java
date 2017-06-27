@@ -23,6 +23,11 @@ import static java.lang.Integer.parseInt;
 
 public class GraphActivity extends AppCompatActivity {
 
+    private ArrayList<Double> steps = new ArrayList<>();
+    private ArrayList<Double> heartrate = new ArrayList<>();
+    private ArrayList<Double> time = new ArrayList<>();
+    private Workout myWorkout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,13 +35,13 @@ public class GraphActivity extends AppCompatActivity {
         //Link graph object to graph
         final GraphView graph = (GraphView) findViewById(R.id.graph);
 
-        //Set graph domain and range
-        graph.getViewport().setMinX(0);
-        graph.getViewport().setMaxX(10);
-        graph.getViewport().setMinY(0);
-        graph.getViewport().setMaxY(10);
-        graph.getViewport().setYAxisBoundsManual(true);
-        graph.getViewport().setXAxisBoundsManual(true);
+        //Since we have no "workout" objects with filled arraylists, manually creating
+        steps.add(0.0);steps.add(5.0);steps.add(20.0);steps.add(45.0);steps.add(70.0);
+        heartrate.add(90.0);heartrate.add(95.0);heartrate.add(110.0);heartrate.add(115.0);heartrate.add(117.5);
+        time.add(0.0);time.add(2.0);time.add(4.0);time.add(6.0);time.add(8.0);
+        //Create new Workout object from these arraylists
+        //In  the future, must figure out how to fill arraylists with data from database
+        myWorkout = new Workout(heartrate,steps,time);
 
         //Attach spinner to created spinner object
         Spinner spinner = (Spinner) findViewById(R.id.graphs_spinner);
@@ -70,19 +75,13 @@ public class GraphActivity extends AppCompatActivity {
                     //Generate hardcoded graph
                 } else if (position == 1) {
                     graph.removeAllSeries();
-                    series = new LineGraphSeries<>(new DataPoint[]{
-                            new DataPoint(0, 2),
-                            new DataPoint(1, 2),
-                            new DataPoint(2, 2),
-                            new DataPoint(3, 2),
-                            new DataPoint(4, 2)
-                    });
+                    series = new LineGraphSeries<>(generateDataSteps(myWorkout));
                     graph.addSeries(series);
                     //Generate data from textfile and graph
                     //Currently not displaying graph
                 } else if (position == 2) {
                     graph.removeAllSeries();
-                    series = new LineGraphSeries<>(generateData());
+                    series = new LineGraphSeries<>(generateDataHeartRate(myWorkout));
                     graph.addSeries(series);
                 }
                 else return;
@@ -92,26 +91,6 @@ public class GraphActivity extends AppCompatActivity {
                 return;
             }
         });
-    }
-
-    /**
-     * Method calculates specified file's line count (aka coord pairs count.
-     * @return An integer representing the coord amount
-     * */
-    public int coordAmount(){
-        BufferedReader in;
-        int coordCount = 0;
-        String fileName = "C:\\Users\\David\\Documents\\AndroidStudioProjects\\group6Project\\Workout1.txt";
-        try{
-            in = new BufferedReader(new FileReader(fileName));
-            while(in.readLine()!= null){
-              coordCount++;
-            }
-        }
-        catch (IOException e) {
-            System.out.println("There was a problem: " + e);
-        }
-        return coordCount;
     }
     /**
      * Initiates a graph object given a view.
@@ -123,46 +102,39 @@ public class GraphActivity extends AppCompatActivity {
 
     /**
      * Generates a set of Data Points given a text file with coordinates.
+     * Refactored 2017-06-27
      * */
-    public DataPoint[] generateData(){
-        BufferedReader in;
-        int[] xArray = new int[coordAmount()];
-        int[] yArray = new int[coordAmount()];
-        //Set datapoint array size to line count of textfile, thus the number of pairs/coords
-        DataPoint[] values = new DataPoint[coordAmount()];
-        String fileName = "C:\\Users\\David\\Documents\\AndroidStudioProjects\\group6Project\\Workout1.txt";
-        //Read and split string, create and add data point from result
-        try {
-            in = new BufferedReader(new FileReader(fileName));
-            String str;
-            String[] ar;
-            int i = 0;
-            //For later: build 2 arrays, fill each with x and y respectively, for loop to read through and create data
-            while((str = in.readLine()) != null){
-                //Splits current string at the comma into two parts
-                ar = str.split(",");
-                //Parse each part of the string as an int and store into array
-                //int x and int y now hold the appropriate x and y graph values
-                int x = parseInt(ar[0]);
-                int y = parseInt(ar[1]);
-                //Create datapoint from x and y values
-                //Add the datapoint to the current values[] position
-                //values[i] = new DataPoint(x,y);
-                xArray[i] = x;
-                yArray[i] = y;
-                i++;
-            }
+    public DataPoint[] generateDataSteps(Workout wrk){
+        //Array of datapoints to be used by generateData()
+        //Is the size of the "time" ArrayList from myWorkout
+        DataPoint[] db = new DataPoint[wrk.getTimeList().size()];
+        //Scan through the elements of each ArrayList from myWorkout object to create datapoints
+        for(int i=0; i<time.size();i++){
+            DataPoint v = new DataPoint(wrk.getTimeList().get(i), wrk.getStepsList().get(i));
+            //Add current datapoint to array;
+            db[i] = v;
         }
-        catch (IOException e) {
-            System.out.println("There was a problem: " + e);
-        }
-        //xArrays and yArrays are now filled
-        //Loops through each of their elements and build data point
-        for(int c=0;c<coordAmount();c++){
-            DataPoint v = new DataPoint(xArray[c],yArray[c]);
-            values[c] = v;
-        }
-        return values;
+        //Returns a filled datapoint array.
+        return db;
     }
+
+    /**
+     * Generates a set of Data Points given heart rates and times.
+     * */
+    public DataPoint[] generateDataHeartRate(Workout wrk){
+        //Array of datapoints to be used by generateData()
+        //Is the size of the "time" ArrayList from myWorkout
+        DataPoint[] db = new DataPoint[wrk.getTimeList().size()];
+        //Scan through the elements of each ArrayList from myWorkout object to create datapoints
+        for(int i=0; i<time.size();i++){
+            DataPoint v = new DataPoint(wrk.getTimeList().get(i), wrk.getHeartrateList().get(i));
+            //Add current datapoint to array;
+            db[i] = v;
+        }
+        //Returns a filled datapoint array.
+        return db;
+    }
+
+
 }
 
