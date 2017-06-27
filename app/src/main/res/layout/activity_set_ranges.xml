@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.david.myapplication.SetRangesActivity"
-    tools:showIn="@layout/activity_set_ranges">
+    tools:context="com.example.david.myapplication.SetRangesActivity">
 
     <TextView
         android:id="@+id/tvLabel1"
