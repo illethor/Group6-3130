@@ -8,11 +8,11 @@ android:
   components:
     # Uncomment the lines below if you want to
     # use the latest revision of Android SDK Tools
-    - tools
     - platform-tools
+    - build-tools-25.0.3
     - android-25
+    - extra-android-m2repository
+    - extra-google-m2repository
+
 before_script:
    - chmod +x gradlew
-   - npm install -g firebase-tools@3.5.0
-after_success:
-  - firebase deploy --token $FIREBASE_TOKEN
