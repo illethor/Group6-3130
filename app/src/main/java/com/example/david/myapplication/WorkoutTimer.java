@@ -22,7 +22,7 @@ public class WorkoutTimer {
         timer.scheduleAtFixedRate(task, 1000, 1000);
     }
     /*public static void main(String[] args){
-        TimerActivity timer1 = new TimerActivity();
+        WorkoutActivity timer1 = new WorkoutActivity();
         timer1.start();
     }*/
 }

@@ -1,5 +1,6 @@
 package com.example.david.myapplication;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -58,12 +59,13 @@ public class SetRangesActivity extends AppCompatActivity {
         lowerBound = Integer.parseInt(etLowerBound.getText().toString());
         upperBound = Integer.parseInt(etUpperBound.getText().toString());
 
-        if(upperBound<lowerBound){
+        if (upperBound < lowerBound) {
             //error message
-        }
-        else{
+        } else {
             //send infoToTrack, lowerBound, and upperBound for use with alert dialog
         }
-    }
 
+        Intent intent = new Intent(SetRangesActivity.this, WorkoutActivity.class);
+        startActivity(intent);
+    }
 }

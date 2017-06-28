@@ -1,15 +1,20 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">Workout Application - Iteration 2</string>
     <string-array name="infoToTrack_array">
-        <item>Speed</item>
-        <item>Heart Rate</item>
-        <item>Temperature</item>
+        <item>Walking</item>
+        <item>Running</item>
     </string-array>
     <string-array name="graphs_array">
         <item>Workout 1</item>
         <item>Workout 2</item>
         <item>Workout 3</item>
     </string-array>
+    <string name="workoutSelection">Select your workout type:</string>
+    <string name="lbLabel">Heartrate Lower Bound:</string>
+    <string name="ubLabel">Heartrate Upper Bound:</string>
+    <string name="beginWorkoutBtn">Apply</string>
+    <string name="finish">Finish</string>
+    <string name="start">Start</string>
     <string name="failedLogin">Incorrect Login Information</string>
     <string name="passwordTooSmall">Password entered must be 6 or more characters</string>
     <string name="passwordEmpty">Must enter a password</string>
