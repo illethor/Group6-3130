@@ -13,3 +13,6 @@ android:
     - android-25
 before_script:
    - chmod +x gradlew
+deploy:
+  provider: firebase
+  token: 1/_yxct_XoXtPaozry-WfbjtnXr5O6MOgt_4Q8Y1hkYsQ
