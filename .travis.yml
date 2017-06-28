@@ -13,7 +13,6 @@ android:
     - android-25
 before_script:
    - chmod +x gradlew
-   - npm install -g @google-cloud/functions-emulator
    - npm install -g firebase-tools
 after_success:
   - firebase deploy --token $FIREBASE_TOKEN
