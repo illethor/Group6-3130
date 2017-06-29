@@ -91,7 +91,7 @@ public class LoginTests {
     public void testSuccessfulLogin(){
         // Create valid login credentials for a dummy account
         String email = "test@testuser.com";
-        String password = "testuser";
+        String password = "testufser";
         // Attempt to login with them
         onView(withId(R.id.txtEmail)).perform(typeText(email)).perform(closeSoftKeyboard());
         onView(withId(R.id.txtPassword)).perform(typeText(password)).perform(closeSoftKeyboard());
