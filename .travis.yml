@@ -13,6 +13,10 @@ android:
     - android-25
     - extra-android-m2repository
     - extra-google-m2repository
+
+script:
+    - ./gradlew build #connectedCheck
+
 before_script:
    - chmod +x gradlew
    - echo no | android create avd --force -n test -t android-21 --abi armeabi-v7a
