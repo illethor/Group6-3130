@@ -1,11 +1,14 @@
 package com.example.david.myapplication;
 
+import android.app.Activity;
 import android.os.SystemClock;
 import android.support.test.rule.ActivityTestRule;
+import android.view.WindowManager;
 
 import com.google.firebase.auth.FirebaseAuth;
 
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -23,6 +26,19 @@ public class LoginTests {
     @Rule
     public final ActivityTestRule<LoginActivity> mActivityRule =
             new ActivityTestRule<>(LoginActivity.class);
+
+    @Before
+    public void unlockScreen() {
+        final Activity activity = mActivityRule.getActivity();
+        Runnable wakeUpDevice = new Runnable() {
+            public void run() {
+                activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON |
+                        WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED |
+                        WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            }
+        };
+        activity.runOnUiThread(wakeUpDevice);
+    }
     // Begin verifying all buttons and text fields are displaying and clickable
     @Test
     public void checkEmailField(){
