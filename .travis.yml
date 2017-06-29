@@ -15,8 +15,8 @@ android:
     - extra-google-m2repository
     - sys-img-armeabi-v7a-android-21
 script:
-    - ./gradlew build #connectedCheck
-    - ./gradlew connectedAndroidTest
+    - ./gradlew build
+    #- ./gradlew connectedAndroidTest
 
 before_script:
    - chmod +x gradlew
