@@ -77,7 +77,7 @@ public class LoginTests {
     public void failedLoginTest(){
         // Create invalid login credentials that will fail
         String email = "badEmail@email.com";
-        String password = "badPassword";
+        String password = "badPawefssword";
         // Attempt to login with them
         onView(withId(R.id.txtEmail)).perform(typeText(email)).perform(closeSoftKeyboard());
         onView(withId(R.id.txtPassword)).perform(typeText(password)).perform(closeSoftKeyboard());
