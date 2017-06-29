@@ -1,3 +1,4 @@
+/*
 //GraphActivity activity tests
 
 package com.example.david.myapplication;
@@ -32,10 +33,12 @@ import static org.hamcrest.core.IsInstanceOf.instanceOf;
 
 public class GraphInstrumentedTest {
 
-    /**
+    */
+/**
      * Matches an item from an AdapterView with a specific String.
      * (The items in AdapterView should be strings)
-     */
+     *//*
+
 
     //Start graph activity
     @Rule
@@ -66,3 +69,4 @@ public class GraphInstrumentedTest {
                 .perform(click());
     }
 }
+*/
