@@ -13,7 +13,7 @@ android:
     - android-25
     - extra-android-m2repository
     - extra-google-m2repository
-
+    - sys-img-armeabi-v7a-android-21
 script:
     - ./gradlew build #connectedCheck
 
