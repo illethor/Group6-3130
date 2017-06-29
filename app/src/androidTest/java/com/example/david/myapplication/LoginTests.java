@@ -15,6 +15,7 @@ import org.junit.Test;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
+import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
@@ -42,24 +43,24 @@ public class LoginTests {
     // Begin verifying all buttons and text fields are displaying and clickable
     @Test
     public void checkEmailField(){
-        onView(withId(R.id.txtEmail)).perform(click());
+        onView(withId(R.id.txtEmail)).perform(scrollTo()).perform(click());
     }
     @Test
     public void checkPasswordField(){
-        onView(withId(R.id.txtPassword)).perform(click());
+        onView(withId(R.id.txtPassword)).perform(scrollTo()).perform(click());
     }
     @Test
     public void checkLoginBtn(){
-        onView(withId(R.id.btnLogin)).perform(click());
+        onView(withId(R.id.btnLogin)).perform(scrollTo()).perform(click());
     }
     @Test
     public void checkSignupBtn(){
-        onView(withId(R.id.btnSignup)).perform(click());
+        onView(withId(R.id.btnSignup)).perform(scrollTo()).perform(click());
     }
     // Verify correct error messages are displaying with blank email & password
     @Test
     public void noEmailEntered(){
-        onView(withId(R.id.btnLogin)).perform(click());
+        onView(withId(R.id.btnLogin)).perform(scrollTo()).perform(click());
         onView(withId(R.id.txtStatusMessage)).check(matches(withText(R.string.emailEmpty)));
     }
     @Test
@@ -67,9 +68,9 @@ public class LoginTests {
         // Dummy email variable
         String email = "badEmail@email.com";
         // Set email so password verification fails
-        onView(withId(R.id.txtEmail)).perform(typeText(email)).perform(closeSoftKeyboard());
+        onView(withId(R.id.txtEmail)).perform(scrollTo()).perform(typeText(email)).perform(closeSoftKeyboard());
         // Attempt to sign in
-        onView(withId(R.id.btnLogin)).perform(click());
+        onView(withId(R.id.btnLogin)).perform(scrollTo()).perform(click());
         onView(withId(R.id.txtStatusMessage)).check(matches(withText(R.string.passwordEmpty)));
     }
     // Verify login is functioning -- When all these tests pass login is working properly
@@ -79,9 +80,9 @@ public class LoginTests {
         String email = "badEmail@email.com";
         String password = "badPawefssword";
         // Attempt to login with them
-        onView(withId(R.id.txtEmail)).perform(typeText(email)).perform(closeSoftKeyboard());
-        onView(withId(R.id.txtPassword)).perform(typeText(password)).perform(closeSoftKeyboard());
-        onView(withId(R.id.btnLogin)).perform(click());
+        onView(withId(R.id.txtEmail)).perform(scrollTo()).perform(typeText(email)).perform(closeSoftKeyboard());
+        onView(withId(R.id.txtPassword)).perform(scrollTo()).perform(typeText(password)).perform(closeSoftKeyboard());
+        onView(withId(R.id.btnLogin)).perform(scrollTo()).perform(click());
         // Avoid any race condition errors by waiting to confirm log in attempt happens
         SystemClock.sleep(1500);
         // Verify status message is displaying "Incorrect Login Information"
@@ -93,9 +94,9 @@ public class LoginTests {
         String email = "test@testuser.com";
         String password = "testuser";
         // Attempt to login with them
-        onView(withId(R.id.txtEmail)).perform(typeText(email)).perform(closeSoftKeyboard());
-        onView(withId(R.id.txtPassword)).perform(typeText(password)).perform(closeSoftKeyboard());
-        onView(withId(R.id.btnLogin)).perform(click());
+        onView(withId(R.id.txtEmail)).perform(scrollTo()).perform(typeText(email)).perform(closeSoftKeyboard());
+        onView(withId(R.id.txtPassword)).perform(scrollTo()).perform(typeText(password)).perform(closeSoftKeyboard());
+        onView(withId(R.id.btnLogin)).perform(scrollTo()).perform(click());
         // Create a wait to avoid any race conditions
         SystemClock.sleep(1500);
         // Check if we have a currentUser if we do we have successfully signed in
