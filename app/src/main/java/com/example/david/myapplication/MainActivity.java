@@ -56,4 +56,8 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(MainActivity.this, SetRangesActivity.class);
         startActivity(intent);
     }
+    public void toMessaging(View view){
+        Intent intent = new Intent(MainActivity.this, MessageActivity.class);
+        startActivity(intent);
+    }
 }
