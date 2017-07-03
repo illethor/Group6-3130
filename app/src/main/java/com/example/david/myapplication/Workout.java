@@ -7,18 +7,12 @@ import java.util.ArrayList;
 
 @IgnoreExtraProperties
 public class Workout {
-    private String heartrate;
-    private String steps;
+    public String heartrate;
+    public String steps;
 
     public Workout(){
 
     }
-
-    /**
-     *
-     * @param heartrate
-     * @param steps
-     */
     public Workout(String heartrate, String steps){
         this.heartrate = heartrate;
         this.steps = steps;
