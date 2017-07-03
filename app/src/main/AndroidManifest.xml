@@ -14,7 +14,8 @@
         <activity android:name=".MessageActivity" />
         <activity android:name=".AlertActivity" />
         <activity android:name=".TimerActivity" />
-        <activity android:name=".GraphActivity" />
+        <activity android:name=".GraphActivity"
+                  android:hardwareAccelerated="true" />
         <activity android:name=".SetRangesActivity" />
         <activity
             android:name=".LoginActivity"
