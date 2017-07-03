@@ -1,4 +1,3 @@
-
 //GraphActivity activity tests
 
 package com.example.david.myapplication;
@@ -32,39 +31,45 @@ import static org.hamcrest.core.IsInstanceOf.instanceOf;
 
 
 public class GraphInstrumentedTest {
-
-    /**
-     * Matches an item from an AdapterView with a specific String.
-     * (The items in AdapterView should be strings)
-     */
-
-
     //Start graph activity
     @Rule
     public final ActivityTestRule<GraphActivity> mActivityRule =
             new ActivityTestRule<>(GraphActivity.class);
 
+    //Tests to make sure all buttons are clickable
     @Test
     public void stepsButtonTest() throws Exception{
-        //Checks the button is there by clicking it
-        onView(withId(R.id.steps))
-                .perform(click());
+        onView(withId(R.id.stepGraphBtn)).perform(click());
     }
     @Test
     public void heartrateButtonTest() throws Exception{
-        //Checks the button is there by clicking it
-        onView(withId(R.id.heartrate))
-                .perform(click());
+        onView(withId(R.id.heartrateGraphBtn)).perform(click());
+    }
+    @Test
+    public void heartrateAverageButtonTest() throws Exception{
+        onView(withId(R.id.averageHeartrates)).perform(click());
+    }
+    @Test
+    public void stepsAverageButtonTest() throws Exception{
+        onView(withId(R.id.averageSteps)).perform(click());
     }
 
-    //Checks if specified string is one of the spinner's selections
+
+    //Checks if specified workouts' names are in the spinner's selections
+    //and presses button to graph the steps of the workouts one after the other
     @Test
     public void isInList(){
         //Opens spinner view
-        onView(withId(R.id.graphs_spinner))
-                .perform(click());
+        onView(withId(R.id.graphs_spinner)).perform(click());
         //Attempts to click whatever spinner option starts with specified string
-        onData(hasToString(startsWith("Workout 3")))
-                .perform(click());
+        onData(hasToString(startsWith("workout 2"))).perform(click());
+        onView(withId(R.id.stepGraphBtn)).perform(click());
+        onView(withId(R.id.heartrateGraphBtn)).perform(click());
+        onView(withId(R.id.graphs_spinner)).perform(click());
+        onData(hasToString(startsWith("workout 1"))).perform(click());
+        onView(withId(R.id.stepGraphBtn)).perform(click());
+        onView(withId(R.id.heartrateGraphBtn)).perform(click());
     }
+
 }
+
