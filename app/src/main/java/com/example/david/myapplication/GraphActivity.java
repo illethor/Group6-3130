@@ -1,140 +1,221 @@
 package com.example.david.myapplication;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
+
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.DataPointInterface;
 import com.jjoe64.graphview.series.LineGraphSeries;
+import com.jjoe64.graphview.series.OnDataPointTapListener;
+import com.jjoe64.graphview.series.Series;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.lang.Integer.parseInt;
-
 public class GraphActivity extends AppCompatActivity {
-
-    private ArrayList<Double> steps = new ArrayList<>();
-    private ArrayList<Double> heartrate = new ArrayList<>();
-    private ArrayList<Double> time = new ArrayList<>();
-    private Workout myWorkout;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph);
         //Link graph object to graph
         final GraphView graph = (GraphView) findViewById(R.id.graph);
+        //Declare ArrayLists that store workoutNames for the spinner and workoutObjects for workout data respectively.
+        final ArrayList<String> workoutNames = new ArrayList<>();
+        final List<Workout> workoutObjects = new ArrayList<>();
+        final Button stepsGraph = (Button)findViewById(R.id.stepGraphBtn);
+        final Button heartratesGraph = (Button)findViewById(R.id.heartrateGraphBtn);
+        final Button averageStepsGraph = (Button)findViewById(R.id.averageSteps);
+        final Button averageHeartratesGraph = (Button)findViewById(R.id.averageHeartrates);
 
-        //Since we have no "workout" objects with filled arraylists, manually creating
-        steps.add(0.0);steps.add(5.0);steps.add(20.0);steps.add(45.0);steps.add(70.0);
-        heartrate.add(90.0);heartrate.add(95.0);heartrate.add(110.0);heartrate.add(115.0);heartrate.add(117.5);
-        time.add(0.0);time.add(2.0);time.add(4.0);time.add(6.0);time.add(8.0);
-        //Create new Workout object from these arraylists
-        //In  the future, must figure out how to fill arraylists with data from database
-        myWorkout = new Workout(heartrate,steps,time);
+        //Firebase
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference dbRef = database.getReference();
 
-        //Attach spinner to created spinner object
-        Spinner spinner = (Spinner) findViewById(R.id.graphs_spinner);
-
-        // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.graphs_array, android.R.layout.simple_spinner_item);
-
-        // Specify the layout to use when the list of choices appears
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        // Apply the adapter to the spinner
-        spinner.setAdapter(adapter);
-
-        //Spinner listener
-        spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                LineGraphSeries<DataPoint> series;
-                //Retrieves selected item
-                String selectedItem = parent.getItemAtPosition(position).toString(); //this is your selected item
-                //Generate hardcoded graph
-                if (position == 0) {
-                    graph.removeAllSeries();
-                    series = new LineGraphSeries<>(new DataPoint[]{
-                            new DataPoint(0, 0),
-                            new DataPoint(1, 2),
-                            new DataPoint(2, 4),
-                            new DataPoint(3, 6),
-                            new DataPoint(4, 8)
-                    });
-                    graph.addSeries(series);
-                    //Generate hardcoded graph
-                } else if (position == 1) {
-                    graph.removeAllSeries();
-                    series = new LineGraphSeries<>(generateDataSteps(myWorkout));
-                    graph.addSeries(series);
-                    //Generate data from textfile and graph
-                    //Currently not displaying graph
-                } else if (position == 2) {
-                    graph.removeAllSeries();
-                    series = new LineGraphSeries<>(generateDataHeartRate(myWorkout));
-                    graph.addSeries(series);
+        //Obtains Workout POJOs from database and stores them in an ArrayList<Workout>
+        dbRef.child("workouts").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Iterable<DataSnapshot> children = dataSnapshot.getChildren();
+                for (DataSnapshot child:children) {
+                    Workout i = child.getValue(Workout.class);
+                    String fsteps = i.getStepsList();
+                    String fheartrate = i.getHeartrateList();
+                    workoutObjects.add(new Workout(fheartrate,fsteps));
                 }
-                else return;
             }
 
-            public void onNothingSelected(AdapterView<?> parent) {
-                return;
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        dbRef.child("workouts").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Iterable<DataSnapshot> children = dataSnapshot.getChildren();
+                /**
+                 * Looks at the children of "workouts", and gets their name(keys)
+                 * Adds them to ArrayList to populate spinner
+                 */
+                for (DataSnapshot child:children) {
+                    String key = child.getKey();
+                    workoutNames.add(key);
+                }
+
+                //Spinner stuff
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(GraphActivity.this, android.R.layout.simple_spinner_item, workoutNames);
+                Spinner spinner = (Spinner) findViewById(R.id.graphs_spinner);
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                adapter.notifyDataSetChanged();
+                spinner.setAdapter(adapter);
+                //Spinner Listener, reacts to what you select
+                spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        //String item = (String) parent.getItemAtPosition(position);
+
+                        final String[] stepStringArray, heartrateStringArray;
+                        final int[] stepIntArray, heartrateIntArray, timeArray;
+                        //Grab string of steps from currently selected workoutObject
+                        String steps = workoutObjects.get(position).getStepsList();
+                        //Grab string of heart rates from currently selected workoutObject
+                        String heartrates = workoutObjects.get(position).getHeartrateList();
+                        //Extract each number as a string and store into string arrays
+                        stepStringArray = steps.trim().split("\\s+");
+                        stepIntArray = new int[stepStringArray.length];
+                        //Convert string numbers from string array into ints and store into int array
+                        for(int i=0;i<stepStringArray.length;i++){
+                            stepIntArray[i]=Integer.parseInt(stepStringArray[i]);
+                        }
+                        //Extract each number as a string and store into string arrays
+                        heartrateStringArray = heartrates.trim().split("\\s+");
+                        heartrateIntArray = new int[heartrateStringArray.length];
+                        //Convert string numbers from string array into ints and store into int array
+                        for(int i=0;i<stepStringArray.length;i++){
+                            heartrateIntArray[i]=Integer.parseInt(heartrateStringArray[i]);
+                        }
+
+                        //Fills stepIntArray and heartrateIntArray with type int
+                        for (int i = 0; i < stepStringArray.length; i++) {
+                            stepIntArray[i]=Integer.parseInt(stepStringArray[i]);
+                            heartrateIntArray[i]=Integer.parseInt(heartrateStringArray[i]);
+                        }
+                        //Create array of times. Assume steps/heart rates are polled every 10 seconds
+                        timeArray = new int[stepStringArray.length];
+                        //First time should be 0
+                        timeArray[0] = 0;
+                        //+= 10 every next element of the array
+                        for (int i = 1; i < stepIntArray.length-1; i++){
+                            timeArray[i] = timeArray[i-1]+10;
+                        }
+                        graph.removeAllSeries();
+                        //Step button listener. When "STEPS" button is pressed, graphs steps over time of currently selected workout.
+                        stepsGraph.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                //set graph title
+                                graph.setTitle("Steps taken over time");
+                                // set manual X bounds
+                                graph.getViewport().setXAxisBoundsManual(true);
+                                graph.getViewport().setMinX(0);
+                                graph.getViewport().setMaxX(stepIntArray.length*10);
+                                //set manual Y bounds
+                                graph.getViewport().setYAxisBoundsManual(true);
+                                graph.getViewport().setMinY(0);
+                                graph.getViewport().setMaxY(stepIntArray[stepIntArray.length-1]);
+                                graph.getViewport().setScalable(true);
+                                graph.removeAllSeries();
+                                LineGraphSeries series = new LineGraphSeries<>(generateData(timeArray,stepIntArray));
+                                //DataPoint tap listener. Displays via Toast the datapoint of the series that has been tapped
+                                series.setOnDataPointTapListener(new OnDataPointTapListener() {
+                                    @Override
+                                    public void onTap(Series series, DataPointInterface dataPoint) {
+                                        Toast.makeText(GraphActivity.this, "Tapped: "+dataPoint, Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                                graph.addSeries(series);
+
+                            }
+                        });
+                        //Heartrate button listener. When "HEARTRATE" is pressed, graphs heartrate over time of currently selected workout.
+                        heartratesGraph.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                //set graph title
+                                graph.setTitle("Heart rate over time");
+                                // set manual X bounds because I can't get the right maximum elapsed time from my timeArray, RIP.
+                                graph.getViewport().setXAxisBoundsManual(true);
+                                graph.getViewport().setMinX(0);
+                                graph.getViewport().setMaxX(heartrateIntArray.length*10);
+                                //set manual Y bounds
+                                graph.getViewport().setYAxisBoundsManual(true);
+                                graph.getViewport().setMinY(0);
+                                graph.getViewport().setMaxY(200);
+                                graph.removeAllSeries();
+                                LineGraphSeries series = new LineGraphSeries<>(generateData(timeArray,heartrateIntArray));
+                                //DataPoint tap listener. Displays via Toast the datapoint of the series that has been tapped
+                                series.setOnDataPointTapListener(new OnDataPointTapListener() {
+                                    @Override
+                                    public void onTap(Series series, DataPointInterface dataPoint) {
+                                        Toast.makeText(GraphActivity.this, "Tapped: "+dataPoint, Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                                graph.addSeries(series);
+
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+
+                    }
+                });
+            }
+
+            public void generateStepsAverage(){
+                for(int i=0;i<workoutObjects.size();i++){
+                    String steps = workoutObjects.get(i).getStepsList();
+
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
             }
         });
     }
+
     /**
-     * Initiates a graph object given a view.
-     * @param v The view for the graph.
-     * */
+     * Method for return button - brings you back to Main Activity.
+     * @param v
+     */
     public void graphToMain(View v) {
         startActivity(new Intent(GraphActivity.this, MainActivity.class));
     }
 
-    /**
-     * Generates a set of Data Points given a text file with coordinates.
-     * Refactored 2017-06-27
-     * */
-    public DataPoint[] generateDataSteps(Workout wrk){
-        //Array of datapoints to be used by generateData()
-        //Is the size of the "time" ArrayList from myWorkout
-        DataPoint[] db = new DataPoint[wrk.getTimeList().size()];
-        //Scan through the elements of each ArrayList from myWorkout object to create datapoints
-        for(int i=0; i<time.size();i++){
-            DataPoint v = new DataPoint(wrk.getTimeList().get(i), wrk.getStepsList().get(i));
-            //Add current datapoint to array;
+    public DataPoint[] generateData(int[] time, int[] steps){
+        DataPoint[] db = new DataPoint[steps.length];
+        for(int i=0; i<steps.length;i++){
+            DataPoint v = new DataPoint(time[i],steps[i]);
             db[i] = v;
         }
-        //Returns a filled datapoint array.
         return db;
     }
-
-    /**
-     * Generates a set of Data Points given heart rates and times.
-     * */
-    public DataPoint[] generateDataHeartRate(Workout wrk){
-        //Array of datapoints to be used by generateData()
-        //Is the size of the "time" ArrayList from myWorkout
-        DataPoint[] db = new DataPoint[wrk.getTimeList().size()];
-        //Scan through the elements of each ArrayList from myWorkout object to create datapoints
-        for(int i=0; i<time.size();i++){
-            DataPoint v = new DataPoint(wrk.getTimeList().get(i), wrk.getHeartrateList().get(i));
-            //Add current datapoint to array;
-            db[i] = v;
-        }
-        //Returns a filled datapoint array.
-        return db;
-    }
-
-
 }
 
