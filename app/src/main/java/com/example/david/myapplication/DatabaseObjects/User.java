@@ -39,6 +39,7 @@ public class User {
         this.isCoach = isCoach;
         this.userEmail = userEmail;
         this.athleteEmail = "";
+        this.messageNotification = false;
     }
     @Exclude
     public Boolean getCoach() {
