@@ -1,5 +1,6 @@
 package com.example.david.myapplication;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -10,12 +11,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.Toast;
 
 public class SetRangesActivity extends AppCompatActivity {
 
-    String infoToTrack;
+    String workoutType;
     int lowerBound, upperBound;
 
+    /**
+     * Main method which listens for user inputting values.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +47,7 @@ public class SetRangesActivity extends AppCompatActivity {
         spnInfo.setOnItemSelectedListener(new OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 //Retrieves selected item
-                infoToTrack = parent.getItemAtPosition(position).toString(); //this is your selected item
+                workoutType = parent.getItemAtPosition(position).toString(); //this is your selected item
             }
             public void onNothingSelected(AdapterView<?> parent) {
                 return;
@@ -50,22 +56,57 @@ public class SetRangesActivity extends AppCompatActivity {
     }
     /**
      * Method which actually sets the specified ranges input by the user.
+     * @param v current view
      * */
     public void applyRanges(View v) {
 
         EditText etLowerBound = (EditText) findViewById(R.id.etLowerBound);
         EditText etUpperBound = (EditText) findViewById(R.id.etUpperBound);
 
-        lowerBound = Integer.parseInt(etLowerBound.getText().toString());
-        upperBound = Integer.parseInt(etUpperBound.getText().toString());
+        if (tryParsing(etLowerBound.getText().toString()) && tryParsing(etUpperBound.getText().toString())) {
+            lowerBound = Integer.parseInt(etLowerBound.getText().toString());
+            upperBound = Integer.parseInt(etUpperBound.getText().toString());
+        }
+        else {
+            Context context = getApplicationContext();
+            CharSequence text = "Invalid range for heart rate! Please input valid heart rate bounds.";
+            int duration = Toast.LENGTH_SHORT;
+
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
+            return;
+        }
 
         if (upperBound < lowerBound) {
-            //error message
+            Context context = getApplicationContext();
+            CharSequence text = "Your upper bound is less than your lower bound!";
+            int duration = Toast.LENGTH_SHORT;
+
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
+            return;
         } else {
-            //send infoToTrack, lowerBound, and upperBound for use with alert dialog
+            //send workoutType, lowerBound, and upperBound for use with alert dialog
         }
+
+        //SET WORKOUT TYPE AND RANGES TO WORKOUT OBJECT HERE!!!!!!!!!!!!!
 
         Intent intent = new Intent(SetRangesActivity.this, WorkoutActivity.class);
         startActivity(intent);
+        finish();
+    }
+
+    /**
+     * Checks if parsing on String is valid, catches error if not.
+     * @param value String representing int
+     * @return boolean value, true if parse is valid, false if not.
+     **/
+    public static boolean tryParsing(String value) {
+        try {
+            Integer.parseInt(value);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 }

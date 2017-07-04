@@ -1,7 +1,6 @@
 package com.example.david.myapplication;
 
 import android.content.Context;
-import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -12,7 +11,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
-import 	android.os.CountDownTimer;
+import android.os.CountDownTimer;
 import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
@@ -28,8 +27,8 @@ public class WorkoutActivity extends AppCompatActivity implements SensorEventLis
     TextView tv_stepNum;
     SensorManager sensorManager;
     boolean running = false;
-    int stepsTaken = -1; // Start at -1 because it seems that the boot up of the sensor triggers
-    // the step counter event.
+    int stepsTaken = -1;
+    String stepsString = "";
 
     //timer variables
     public TextView timeS;
@@ -40,7 +39,13 @@ public class WorkoutActivity extends AppCompatActivity implements SensorEventLis
     private Button Stop;
     public int counterS = -1;
     public int counterM = 0;
-    private boolean stopClicked = false;
+    private boolean stopClicked = true;
+    private int uploadCounter = 0;
+
+    /**
+     * Main method which sets up timer and step counter and their respective listeners
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,12 +65,22 @@ public class WorkoutActivity extends AppCompatActivity implements SensorEventLis
             @Override
             public void onClick(View v)
             {
-                firebaseReference.setValue(stepsTaken);
-
                 //change boolean value
                 stopClicked=true;
-                Start.setVisibility(View.VISIBLE);
-                Stop.setVisibility(View.INVISIBLE);
+
+                //if no steps taken, set to 0 (adjust from -1 initialization value)
+                if (stepsTaken < 0) {
+                    stepsTaken = 0;
+                }
+
+                // WRAP UP VALUES HERE
+                // PUSH STEP VALUES, HEARTRATE VALUES AND TIME VALUES TO WORKOUT OBJECT HERE!!!!!!!!!
+
+                stepsString += stepsTaken + " ";
+                firebaseReference.setValue(stepsString);
+
+                // CLOSE OUT THIS ACTIVITY
+                finish();
             }
         });
 
@@ -78,6 +93,17 @@ public class WorkoutActivity extends AppCompatActivity implements SensorEventLis
 
                 CountDownTimer startSS = new CountDownTimer(1000000000, 1000) {
                     public void onTick(long millisUntilFinished) {
+                        uploadCounter++;
+
+                        //Step counter upload
+                        if (uploadCounter % 15 == 0) {
+                            //adjust for initialized steps taken value of -1
+                            if (stepsTaken < 0) {
+                                stepsTaken = 0;
+                            }
+                            stepsString += stepsTaken + " ";
+                            firebaseReference.setValue(stepsString);
+                        }
 
                         if(stopClicked){
                             timeS.setText(stringS);
@@ -94,19 +120,10 @@ public class WorkoutActivity extends AppCompatActivity implements SensorEventLis
                     public void onFinish(){
                     }
                 }.start();
-
             }
         });
     }
-    public void sendMessageReset(View view) {
-        Intent intent = new Intent(this, WorkoutActivity.class);
-        finish();
-        startActivity(intent);
-    }
-    public void sendMessageReturn(View view) {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-    }
+
     /**
      * Method which handles the seconds and minutes displayed base on parameter values.
      * @param S The number of seconds.
@@ -131,9 +148,7 @@ public class WorkoutActivity extends AppCompatActivity implements SensorEventLis
         counterS = S;
     }
 
-    /**
-     * When resumed will attempt to reconnect to the sensor to get data.
-     * */
+    /** STEP COUNTER LOGIC**/
     @Override
     protected void onResume() {
         super.onResume();
@@ -146,20 +161,34 @@ public class WorkoutActivity extends AppCompatActivity implements SensorEventLis
         }
     }
 
+    /**
+     * Paused step counter listener.
+     */
     @Override
     protected void onPause() {
         super.onPause();
         running = false;
     }
 
+    /**
+     * Updates the step counter upon it being triggered.
+     * @param event step counter change event
+     */
     @Override
     public void onSensorChanged(SensorEvent event) {
         if (running) {
-            stepsTaken++;
-            tv_stepNum.setText(String.valueOf(stepsTaken));
+            if (!stopClicked) {
+                stepsTaken++;
+                tv_stepNum.setText(String.valueOf(stepsTaken));
+            }
         }
     }
 
+    /**
+     * Change of accuracy listener, do nothing in this case.
+     * @param sensor step counter sensor
+     * @param accuracy accuracy value
+     */
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
         //do nothing.

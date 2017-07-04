@@ -13,26 +13,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setTitle("Workout Application: Iteration Two");
-
-        /*Button stepBtn = (Button)findViewById(R.id.stepCounterBtn);
-
-        stepBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    startActivity(new Intent(MainActivity.this, StepCounterActivity.class));
-            }
-        });*/
-
-
-        /*Button Alert = (Button)findViewById(R.id.button3);
-
-        Alert.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, AlertActivity.class));
-            }
-        });*/
-
     }
 
     /**
