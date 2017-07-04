@@ -7,25 +7,30 @@ import java.util.ArrayList;
 
 @IgnoreExtraProperties
 public class Workout {
-    private String heartrate;
-    private String steps;
+    private ArrayList<Double> heartrate;
+    private ArrayList<Double> steps;
+    private ArrayList<Double> time;
 
     public Workout(){
 
     }
 
     /**
-     *
-     * @param heartrate
-     * @param steps
-     */
-    public Workout(String heartrate, String steps){
+     * Used to create new workout
+     * @param heartrate ArrayList of heartrates gathered a specified times
+     * @param steps ArrayList of steps gathered at specified times
+     * @param time ArrayList of specified times at which details are polled/gathered.
+     **/
+    public Workout(ArrayList<Double> heartrate, ArrayList<Double> steps, ArrayList<Double> time){
         this.heartrate = heartrate;
         this.steps = steps;
+        this.time = time;
     }
 
     @Exclude
-    public String getHeartrateList(){return heartrate;}
+    public ArrayList<Double> getHeartrateList(){return heartrate;}
     @Exclude
-    public String getStepsList(){return steps;}
+    public ArrayList<Double> getStepsList(){return steps;}
+    @Exclude
+    public ArrayList<Double> getTimeList(){return time;}
 }
