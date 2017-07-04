@@ -18,50 +18,24 @@ import static org.hamcrest.Matchers.startsWith;
 
 public class MainInstrumentedTest {
 
-    //Start graph activity
+
     @Rule
     public final ActivityTestRule<MainActivity> mActivityRule =
             new ActivityTestRule<>(MainActivity.class);
 
+    // Test Graph Button
     @Test
-    public void button1Test() throws Exception{
+    public void graphTest() throws Exception{
         //Checks the button is there by clicking it
-        onView(withId(R.id.button))
+        onView(withId(R.id.graphsBtn))
                 .perform(click());
     }
 
+    // Test Workout Button
     @Test
-    public void button2Test() throws Exception{
+    public void workoutTest() throws Exception{
         //Checks the button is there by clicking it
-        onView(withId(R.id.button2))
-                .perform(click());
-    }
-
-    @Test
-    public void button3Test() throws Exception{
-        //Checks the button is there by clicking it
-        onView(withId(R.id.button3))
-                .perform(click());
-    }
-
-    @Test
-    public void button4Test() throws Exception{
-        //Checks the button is there by clicking it
-        onView(withId(R.id.button4))
-                .perform(click());
-    }
-
-    @Test
-    public void button5Test() throws Exception{
-        //Checks the button is there by clicking it
-        onView(withId(R.id.button5))
-                .perform(click());
-    }
-
-    @Test
-    public void button6Test() throws Exception{
-        //Checks the button is there by clicking it
-        onView(withId(R.id.stepCounterBtn))
+        onView(withId(R.id.workoutBtn))
                 .perform(click());
     }
 }
