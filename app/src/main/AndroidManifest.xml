@@ -11,7 +11,8 @@
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity"></activity>
         <activity android:name=".StepCounterActivity" />
-        <activity android:name=".MessageActivity" />
+        <activity android:name=".MessageActivity"
+                  android:exported="true"/>
         <activity android:name=".AlertActivity" />
         <activity android:name=".TimerActivity" />
         <activity android:name=".GraphActivity"
