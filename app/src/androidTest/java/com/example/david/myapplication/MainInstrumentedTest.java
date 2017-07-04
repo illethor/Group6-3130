@@ -1,10 +1,7 @@
 package com.example.david.myapplication;
 
-import android.app.Activity;
 import android.support.test.rule.ActivityTestRule;
-import android.view.WindowManager;
 
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -21,63 +18,24 @@ import static org.hamcrest.Matchers.startsWith;
 
 public class MainInstrumentedTest {
 
-    //Start graph activity
+
     @Rule
     public final ActivityTestRule<MainActivity> mActivityRule =
             new ActivityTestRule<>(MainActivity.class);
 
-    @Before
-    public void unlockScreen() {
-        final Activity activity = mActivityRule.getActivity();
-        Runnable wakeUpDevice = new Runnable() {
-            public void run() {
-                activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON |
-                        WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED |
-                        WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-            }
-        };
-        activity.runOnUiThread(wakeUpDevice);
-    }
-
+    // Test Graph Button
     @Test
-    public void button1Test() throws Exception{
+    public void graphTest() throws Exception{
         //Checks the button is there by clicking it
-        onView(withId(R.id.button))
+        onView(withId(R.id.graphsBtn))
                 .perform(click());
     }
 
+    // Test Workout Button
     @Test
-    public void button2Test() throws Exception{
+    public void workoutTest() throws Exception{
         //Checks the button is there by clicking it
-        onView(withId(R.id.button2))
-                .perform(click());
-    }
-
-    @Test
-    public void button3Test() throws Exception{
-        //Checks the button is there by clicking it
-        onView(withId(R.id.button3))
-                .perform(click());
-    }
-
-    @Test
-    public void button4Test() throws Exception{
-        //Checks the button is there by clicking it
-        onView(withId(R.id.button4))
-                .perform(click());
-    }
-
-    @Test
-    public void button5Test() throws Exception{
-        //Checks the button is there by clicking it
-        onView(withId(R.id.button5))
-                .perform(click());
-    }
-
-    @Test
-    public void button6Test() throws Exception{
-        //Checks the button is there by clicking it
-        onView(withId(R.id.stepCounterBtn))
+        onView(withId(R.id.workoutBtn))
                 .perform(click());
     }
 }
