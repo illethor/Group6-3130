@@ -1,10 +1,13 @@
 package com.example.david.myapplication;
 
+import android.app.Activity;
 import android.os.SystemClock;
 import android.support.test.espresso.action.TypeTextAction;
 import android.support.test.rule.ActivityTestRule;
+import android.view.WindowManager;
 
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -25,6 +28,20 @@ public class RegisterTests {
     @Rule
     public final ActivityTestRule<RegisterActivity> mActivityRule =
             new ActivityTestRule<>(RegisterActivity.class);
+
+    @Before
+    public void unlockScreen() {
+        final Activity activity = mActivityRule.getActivity();
+        Runnable wakeUpDevice = new Runnable() {
+            public void run() {
+                activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON |
+                        WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED |
+                        WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            }
+        };
+        activity.runOnUiThread(wakeUpDevice);
+    }
+
     // Verify all buttons and fields are there by simply clicking on them
     @Test
     public void testEmailField(){

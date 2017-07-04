@@ -17,7 +17,7 @@ public class User {
     /**
      * Used for creating a new athlete
      * @param isCoach True if this user is a coach false if this user is an athlete
-     * @param coachEmail If the user is an athelete coachEmail should be put in
+     * @param coachEmail If the user is an athlete coachEmail should be put in
      * @param userEmail This is the email for the user
      * */
     public User(Boolean isCoach, String coachEmail, String userEmail){
