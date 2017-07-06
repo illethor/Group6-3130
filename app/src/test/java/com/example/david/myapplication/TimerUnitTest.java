@@ -13,7 +13,7 @@ public class TimerUnitTest {
 
     @Test
     public void RangeTest() throws Exception {
-        TimerActivity t1 = new TimerActivity();
+        WorkoutActivity t1 = new WorkoutActivity();
 
     }
 }
