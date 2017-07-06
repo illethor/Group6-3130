@@ -23,4 +23,5 @@
     <string name="coachEmailDNE">"Coach email does not exist in database"</string>
     <string name="userNotACoach">"The coach email specified is not a coach, please type a new coach email"</string>
     <string name="coachHasAthelete">"The coach email specified is already assigned to an athelete, plaese type a new coach email</string>
+    <string name="coachMessageSentSuccess">"The message was sent successfully"</string>
 </resources>
