@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+
+import com.google.firebase.auth.FirebaseAuth;
 //import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
@@ -24,6 +26,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
+     * Method for signing out
+     * */
+    public void signOut(View view){
+        if(FirebaseAuth.getInstance() != null){
+            FirebaseAuth.getInstance().signOut();
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(intent);
+        }
+    }
+    /**
      * Method which sends us to the graph activity when button is pressed.
      * */
     public void toGraphs(View v) {
@@ -35,6 +47,11 @@ public class MainActivity extends AppCompatActivity {
      * */
     public void toSetRanges(View view){
         Intent intent = new Intent(MainActivity.this, SetRangesActivity.class);
+        startActivity(intent);
+    }
+
+    public void toMessaging(View view){
+        Intent intent = new Intent(MainActivity.this, MessageActivity.class);
         startActivity(intent);
     }
 }

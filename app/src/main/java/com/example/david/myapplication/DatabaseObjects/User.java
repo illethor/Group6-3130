@@ -10,6 +10,10 @@ public class User {
     String userEmail;
     // athleteEmail will be filled upon user registering to a coach
     String athleteEmail;
+    // Message for an athlete to hold
+    String message;
+    // Notification if a message response was made for a coach
+    Boolean messageNotification;
 
     public User(){
 
@@ -24,6 +28,7 @@ public class User {
         this.isCoach = isCoach;
         this.coachEmail = coachEmail;
         this.userEmail = userEmail;
+        this.message = "";
     }
     /**
      * Used for creating a new coach
@@ -34,6 +39,7 @@ public class User {
         this.isCoach = isCoach;
         this.userEmail = userEmail;
         this.athleteEmail = "";
+        this.messageNotification = false;
     }
     @Exclude
     public Boolean getCoach() {
@@ -52,6 +58,14 @@ public class User {
         return athleteEmail;
     }
     @Exclude
+    public String getMessage(){
+        return message;
+    }
+    @Exclude
+    public Boolean getMessageNotification(){
+        return messageNotification;
+    }
+    @Exclude
     public void setCoach(Boolean coach) {
         isCoach = coach;
     }
@@ -66,5 +80,13 @@ public class User {
     @Exclude
     public void setAthleteEmail(String atheleteEmail) {
         this.athleteEmail = atheleteEmail;
+    }
+    @Exclude
+    public void setMessage(String message){
+        this.message = message;
+    }
+    @Exclude
+    public void setMessageNotification(Boolean messageNotification){
+        this.messageNotification = messageNotification;
     }
 }
