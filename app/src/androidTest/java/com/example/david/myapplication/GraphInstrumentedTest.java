@@ -47,13 +47,13 @@ public class GraphInstrumentedTest {
     @Test
     public void stepsButtonTest() throws Exception{
         //Checks the button is there by clicking it
-        onView(withId(R.id.steps))
+        onView(withId(R.id.stepGraphBtn))
                 .perform(click());
     }
     @Test
     public void heartrateButtonTest() throws Exception{
         //Checks the button is there by clicking it
-        onView(withId(R.id.heartrate))
+        onView(withId(R.id.heartrateGraphBtn))
                 .perform(click());
     }
 
