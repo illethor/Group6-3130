@@ -1,27 +1,47 @@
 package com.example.david.myapplication;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.os.CountDownTimer;
 import android.widget.Toast;
 
+import com.example.david.myapplication.DatabaseObjects.User;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class WorkoutActivity extends AppCompatActivity implements SensorEventListener {
 
     //firebase objects
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private DatabaseReference firebaseUserReference = database.getReference("users");
+    private DatabaseReference firebaseCoachReference = database.getReference("users");
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
     private DatabaseReference firebaseReference = database.getReference("steps");
+
+    //firebase user variables
+    String userEmail;
+    String coachEmail;
 
     //step counter variables
     TextView tv_stepNum;
@@ -55,6 +75,49 @@ public class WorkoutActivity extends AppCompatActivity implements SensorEventLis
         Stop.setVisibility(View.INVISIBLE);
         timeS = (TextView) findViewById(R.id.textViewS);
         timeM = (TextView) findViewById(R.id.textViewM);
+
+        // Initialize all firebase auth information
+        mAuth = FirebaseAuth.getInstance();
+        userEmail = mAuth.getCurrentUser().getEmail();
+        // Constantly monitor the user to see if a message has appeared if it has display it and update coach alert field to true
+        firebaseUserReference.child(cleanEmail(userEmail)).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User objUser = dataSnapshot.getValue(User.class);
+                coachEmail = objUser.getCoachEmail();
+                // check if the user has a message by checking if message length greater than 0
+                if(objUser.getMessage().length() > 0){
+                    // Display an alert message
+                    AlertDialog.Builder builder = new AlertDialog.Builder(WorkoutActivity.this);
+                    builder.setMessage(objUser.getMessage()).setTitle("Coach Message");
+                    builder.setPositiveButton("Ok", new DialogInterface.OnClickListener(){
+                        public void onClick(DialogInterface dialog, int id){
+                            // Message was read send notification to coach
+                            firebaseCoachReference.child(cleanEmail(coachEmail)).addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    User coachUser = dataSnapshot.getValue(User.class);
+                                    // when coach is located update message notification field to true and update it
+                                    coachUser.setMessageNotification(true);
+                                    // save message notification to true
+                                    firebaseCoachReference.child(cleanEmail(coachEmail)).setValue(coachUser);
+                                }
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+                                }
+                            });
+                        }
+                    });
+                    builder.show();
+                    // set message field blank again
+                    objUser.setMessage("");
+                    firebaseUserReference.child(cleanEmail(userEmail)).setValue(objUser);
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
 
         // Step counter setup
         tv_stepNum = (TextView) findViewById(R.id.tv_stepNum);
@@ -192,5 +255,12 @@ public class WorkoutActivity extends AppCompatActivity implements SensorEventLis
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
         //do nothing.
+    }
+
+    /**
+     * Removes the dot from an email for database storage
+     * */
+    public String cleanEmail(String email){
+        return email.replaceAll("\\.","");
     }
 }
