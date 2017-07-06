@@ -37,7 +37,16 @@ public class WorkoutActivity extends AppCompatActivity implements SensorEventLis
     private DatabaseReference firebaseCoachReference = database.getReference("users");
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
-    private DatabaseReference firebaseReference = database.getReference("steps");
+    //references to workout objects
+    private DatabaseReference averageHrReference = database.getReference("workouts/workout 1/averageHeartrate");
+    private DatabaseReference stepsReference= database.getReference("workouts/workout 1/steps");
+    private DatabaseReference heartrateReference = database.getReference("workouts/workout 1/heartrate");
+    private DatabaseReference workoutTypeReference = database.getReference("workouts/workout 1/workoutType");
+
+    //workout object variables
+    int hrUpperBound;
+    int hrLowerBound;
+    String workoutType;
 
     //firebase user variables
     String userEmail;
@@ -123,6 +132,11 @@ public class WorkoutActivity extends AppCompatActivity implements SensorEventLis
         tv_stepNum = (TextView) findViewById(R.id.tv_stepNum);
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
+        //setranges activity setup
+        hrUpperBound = getIntent().getIntExtra("upperBound",  0);
+        hrLowerBound = getIntent().getIntExtra("lowerBound", 0);
+        workoutType = getIntent().getStringExtra("workoutType");
+
         //set stop button status
         Stop.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,16 +145,16 @@ public class WorkoutActivity extends AppCompatActivity implements SensorEventLis
                 //change boolean value
                 stopClicked=true;
 
-                //if no steps taken, set to 0 (adjust from -1 initialization value)
-                if (stepsTaken < 0) {
-                    stepsTaken = 0;
+                //if no steps taken and no step update , set to 0 (adjust from -1 initialization value)
+                if (stepsTaken < 0 && uploadCounter < 15) {
+                    stepsString = "0 ";
                 }
 
-                // WRAP UP VALUES HERE
-                // PUSH STEP VALUES, HEARTRATE VALUES AND TIME VALUES TO WORKOUT OBJECT HERE!!!!!!!!!
+                //push to db
+                workoutTypeReference.setValue(workoutType);
+                stepsReference.setValue(stepsString);
 
-                stepsString += stepsTaken + " ";
-                firebaseReference.setValue(stepsString);
+                //put heartrate values here
 
                 // CLOSE OUT THIS ACTIVITY
                 finish();
@@ -165,7 +179,6 @@ public class WorkoutActivity extends AppCompatActivity implements SensorEventLis
                                 stepsTaken = 0;
                             }
                             stepsString += stepsTaken + " ";
-                            firebaseReference.setValue(stepsString);
                         }
 
                         if(stopClicked){

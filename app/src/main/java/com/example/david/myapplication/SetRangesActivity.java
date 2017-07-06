@@ -89,9 +89,13 @@ public class SetRangesActivity extends AppCompatActivity {
             //send workoutType, lowerBound, and upperBound for use with alert dialog
         }
 
-        //SET WORKOUT TYPE AND RANGES TO WORKOUT OBJECT HERE!!!!!!!!!!!!!
-
         Intent intent = new Intent(SetRangesActivity.this, WorkoutActivity.class);
+
+        //pass along required data to the next activity
+        intent.putExtra("upperBound", upperBound);
+        intent.putExtra("lowerBound", lowerBound);
+        intent.putExtra("workoutType", workoutType);
+
         startActivity(intent);
         finish();
     }
