@@ -91,7 +91,7 @@ public class SetRangesActivity extends AppCompatActivity {
 
         Intent intent = new Intent(SetRangesActivity.this, WorkoutActivity.class);
 
-        //pass along required data to the next activity
+        //pass along required data to the next activity (workout activity)
         intent.putExtra("upperBound", upperBound);
         intent.putExtra("lowerBound", lowerBound);
         intent.putExtra("workoutType", workoutType);
