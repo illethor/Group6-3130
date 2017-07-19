@@ -65,6 +65,16 @@ android {
     }
 }
 
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+    }
+}
+
+
 def SupportVersion = '25.3.1'
 def AAVersion = '4.0.0'
 def ParcelerVersion = '1.1.6'
@@ -108,14 +118,14 @@ dependencies {
     compile 'com.google.firebase:firebase-auth:10.2.6'
     compile 'com.jjoe64:graphview:4.2.1'
 
-    testCompile 'junit:junit:4.12'
+    compile 'junit:junit:4.12'
 }
 
-//apt {
-//    arguments {
-//        androidManifestFile variant.outputs[0].processResources.manifestFile
-//    }
-//}
+apt {
+    arguments {
+        androidManifestFile variant.outputs[0].processResources.manifestFile
+    }
+}
 
 apply plugin: 'com.google.gms.google-services'
 
