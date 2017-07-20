@@ -10,7 +10,7 @@ import static junit.framework.Assert.assertTrue;
 /**
  * Unit test suite for Set Ranges Activity
  */
-public class SetRangesUnitTest {
+public class FitnessSetRangesUnitTest {
     @Test
     public void tryParsingTest() throws Exception {
         assertFalse(FitnessSetRangesActivity.tryParsing("notvalid"));

@@ -22,7 +22,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static junit.framework.Assert.fail;
 
-public class LoginTests {
+public class FitnessLoginTests {
     // Start the FitnessLoginActivity
     @Rule
     public final ActivityTestRule<FitnessLoginActivity> mActivityRule =

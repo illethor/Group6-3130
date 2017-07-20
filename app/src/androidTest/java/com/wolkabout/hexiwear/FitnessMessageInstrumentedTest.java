@@ -5,7 +5,7 @@ import android.support.test.rule.ActivityTestRule;
 import com.wolkabout.hexiwear.activity.FitnessMessageActivity;
 import org.junit.Rule;
 
-public class MessageInstrumentedTest {
+public class FitnessMessageInstrumentedTest {
     // Start the LoginActivity
     @Rule
     public final ActivityTestRule<FitnessMessageActivity> mActivityRule =

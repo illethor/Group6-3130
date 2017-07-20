@@ -11,8 +11,8 @@ public class FitnessWorkout {
     public int averageHeartrate;
 
     public FitnessWorkout(){
-
     }
+
     public FitnessWorkout(String heartrate, String steps, String workoutType, int averageHeartrate){
         this.heartrate = heartrate;
         this.steps = steps;
