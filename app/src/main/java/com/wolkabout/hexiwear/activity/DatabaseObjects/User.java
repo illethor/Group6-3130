@@ -5,15 +5,15 @@ import com.google.firebase.database.IgnoreExtraProperties;
 
 @IgnoreExtraProperties
 public class User {
-    Boolean isCoach;
-    String coachEmail;
-    String userEmail;
+    public Boolean isCoach;
+    public String coachEmail;
+    public String userEmail;
     // athleteEmail will be filled upon user registering to a coach
-    String athleteEmail;
+    public String athleteEmail;
     // Message for an athlete to hold
-    String message;
+    public String message;
     // Notification if a message response was made for a coach
-    Boolean messageNotification;
+    public Boolean messageNotification;
 
     public User(){
 

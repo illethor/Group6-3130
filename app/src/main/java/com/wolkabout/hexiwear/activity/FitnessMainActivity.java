@@ -16,6 +16,10 @@ public class FitnessMainActivity extends AppCompatActivity {
         setTitle("FitnessWorkout Application: Iteration Two");
     }
 
+    protected void onDestroy(Bundle savedInstanceState) {
+        FirebaseAuth.getInstance().signOut();
+    }
+
     /**
      * Method which switches our view to the timer activity upon button press.
      * */
