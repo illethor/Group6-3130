@@ -263,7 +263,7 @@ public class FitnessGraphActivity extends AppCompatActivity {
         startActivity(new Intent(FitnessGraphActivity.this, FitnessMainActivity.class));
     }
 
-    public DataPoint[] generateData(int[] time, int[] steps){
+    public static DataPoint[] generateData(int[] time, int[] steps){
         DataPoint[] db = new DataPoint[steps.length];
         for(int i=0; i<steps.length;i++){
             DataPoint v = new DataPoint(time[i],steps[i]);
