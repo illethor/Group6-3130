@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.os.Environment;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -26,6 +27,7 @@ import com.jjoe64.graphview.series.Series;
 import com.wolkabout.hexiwear.R;
 import java.util.ArrayList;
 import java.util.List;
+import java.io.*;
 
 public class FitnessGraphActivity extends AppCompatActivity {
     @Override
@@ -40,6 +42,7 @@ public class FitnessGraphActivity extends AppCompatActivity {
         //Declare buttons
         final Button stepsGraph = (Button)findViewById(R.id.stepGraphBtn);
         final Button heartratesGraph = (Button)findViewById(R.id.heartrateGraphBtn);
+        final Button export = (Button)findViewById(R.id.exportBtn);
         //Averages not implemented yet
         final Button averageStepsGraph = (Button)findViewById(R.id.averageSteps);
         final Button averageHeartratesGraph = (Button)findViewById(R.id.averageHeartrates);
@@ -102,6 +105,7 @@ public class FitnessGraphActivity extends AppCompatActivity {
                         final String[] stepStringArray, heartrateStringArray;
                         final int[] stepIntArray, heartrateIntArray, timeArray;
                         final String workoutType = fitnessWorkoutObjects.get(position).getWorkoutType();
+                        final String workoutName = workoutNames.get(position);
                         final int[] highestStep = new int[fitnessWorkoutObjects.size()];
                         final String[] stepListStringArray = new String[fitnessWorkoutObjects.size()];
                         String[] stepListStringSplitArray = new String[fitnessWorkoutObjects.size()];
@@ -235,6 +239,47 @@ public class FitnessGraphActivity extends AppCompatActivity {
                             @Override
                             public void onClick(View v) {
                                 graphText.setText("Your average steps (over all workouts): "+averageSteps);
+                            }
+                        });
+                        //brogan and David
+                        export.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                                FileWriter filewriter = null;
+
+                                try{
+                                    //make the directory to put the csv file into
+                                    File foobar = new File(Environment.getExternalStorageDirectory(), "Notes");
+                                    if (!foobar.exists()) {
+                                        foobar.mkdirs();
+                                    }
+
+                                    File test = new File (foobar, "test.csv");
+                                    filewriter = new FileWriter(test);
+
+                                    //each entrance in workout will be formatted as
+                                    //Time: time, Heart Rate: heartRate, Steps: steps
+                                    for(int i=0; i<stepIntArray.length-1; i++){
+                                        filewriter.append("Time: ");
+                                        filewriter.append(String.valueOf(timeArray[i]));
+                                        filewriter.append(",");
+                                        filewriter.append("Heart Rate: ");
+                                        filewriter.append(String.valueOf(heartrateIntArray[i]));
+                                        filewriter.append(",");
+                                        filewriter.append("Steps: ");
+                                        filewriter.append(String.valueOf(stepIntArray[i]));
+                                        filewriter.append("\n");
+                                    }
+
+                                    filewriter.flush();
+                                    filewriter.close();
+
+                                } catch (Exception e) {
+                                    graphText.setText("Error in CsvFileWriter !!!");
+                                    System.out.println("Error in CsvFileWriter !!!");
+                                    e.printStackTrace();
+                                }
                             }
                         });
                     }

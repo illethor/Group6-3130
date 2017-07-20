@@ -54,4 +54,10 @@ public class GraphInstrumentedTest {
         onData(hasToString(startsWith("FitnessWorkout 3")))
                 .perform(click());
     }
+    @Test
+    public void exportButtonTest() throws Exception{
+        //Checks the button is there by clicking it
+        onView(withId(R.id.exportBtn))
+                .perform(click());
+    }
 }
