@@ -23,7 +23,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 
-public class RegisterTests {
+public class FitnessRegisterTests {
     @Rule
     public final ActivityTestRule<FitnessRegisterActivity> mActivityRule =
             new ActivityTestRule<>(FitnessRegisterActivity.class);

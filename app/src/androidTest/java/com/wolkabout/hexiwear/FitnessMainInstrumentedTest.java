@@ -23,7 +23,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
  * Created by David on 2017-06-01.
  */
 
-public class MainInstrumentedTest {
+public class FitnessMainInstrumentedTest {
 
     @Rule
     public final ActivityTestRule<FitnessLoginActivity> mActivityRule =

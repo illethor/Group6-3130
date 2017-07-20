@@ -28,7 +28,7 @@ import static org.hamcrest.Matchers.hasToString;
 import static org.hamcrest.core.StringStartsWith.startsWith;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class SetRangesInstrumentedTest {
+public class FitnessSetRangesInstrumentedTest {
 
     @Rule
     public final ActivityTestRule<FitnessLoginActivity> mActivityRule =

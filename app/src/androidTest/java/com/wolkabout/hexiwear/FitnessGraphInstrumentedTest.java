@@ -20,6 +20,8 @@ import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static org.hamcrest.Matchers.hasToString;
 import static org.hamcrest.Matchers.startsWith;
@@ -28,7 +30,7 @@ import com.wolkabout.hexiwear.activity.FitnessLoginActivity;
 
 
 
-public class GraphInstrumentedTest {
+public class FitnessGraphInstrumentedTest {
     //Start graph activity
     /*@Rule
     public final ActivityTestRule<FitnessGraphActivity> mActivityRule =
@@ -54,6 +56,7 @@ public class GraphInstrumentedTest {
     @After
     public final void signoutAfter() {
         FirebaseAuth.getInstance().signOut();
+        SystemClock.sleep(2000);
     }
 
     @AfterClass
@@ -68,9 +71,10 @@ public class GraphInstrumentedTest {
     }
     @Test
     public void heartrateButtonTest() throws Exception{
+        SystemClock.sleep(2000);
         //Checks the button is there by clicking it
         onView(withId(R.id.heartrateGraphBtn))
-                .perform(click());
+                .check(matches(isDisplayed()));
     }
     @Test
     public void averageHeartrateTest() throws Exception{
@@ -90,6 +94,8 @@ public class GraphInstrumentedTest {
         //Opens spinner view
         onView(withId(R.id.graphs_spinner))
                 .perform(click());
+
+        SystemClock.sleep(2000);
         //Attempts to click whatever spinner option starts with specified string
         onData(hasToString(startsWith("workout 2")))
                 .perform(click());
