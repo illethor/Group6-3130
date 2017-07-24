@@ -251,13 +251,13 @@ public class FitnessGraphActivity extends AppCompatActivity {
 
                                 try{
                                     //make the directory to put the csv file into
-                                    File foobar = new File(Environment.getExternalStorageDirectory(), "Notes");
-                                    if (!foobar.exists()) {
-                                        foobar.mkdirs();
+                                    File directory = new File(Environment.getExternalStorageDirectory(), "Group6 Workouts");
+                                    if (!directory.exists()) {
+                                        directory.mkdirs();
                                     }
 
-                                    File test = new File (foobar, "test.csv");
-                                    filewriter = new FileWriter(test);
+                                    File file = new File (directory, workoutName+".csv");
+                                    filewriter = new FileWriter(file);
 
                                     //each entrance in workout will be formatted as
                                     //Time: time, Heart Rate: heartRate, Steps: steps
@@ -272,15 +272,17 @@ public class FitnessGraphActivity extends AppCompatActivity {
                                         filewriter.append(String.valueOf(stepIntArray[i]));
                                         filewriter.append("\n");
                                     }
-
+                                    //graphText.setText(workoutName+".csv succesfully created");
+                                    graphText.setText("Brogan is cool");
                                     filewriter.flush();
                                     filewriter.close();
 
                                 } catch (Exception e) {
-                                    graphText.setText("Error in CsvFileWriter !!!");
-                                    System.out.println("Error in CsvFileWriter !!!");
+                                    //graphText.setText("Error in CsvFileWriter !!!");
+                                    graphText.setText("Brogan is cool");
                                     e.printStackTrace();
                                 }
+
                             }
                         });
                     }

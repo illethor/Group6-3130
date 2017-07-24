@@ -28,6 +28,9 @@ import static org.hamcrest.Matchers.startsWith;
 import com.google.firebase.auth.FirebaseAuth;
 import com.wolkabout.hexiwear.activity.FitnessLoginActivity;
 
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.Matchers.allOf;
+
 
 
 public class FitnessGraphInstrumentedTest {
@@ -87,6 +90,15 @@ public class FitnessGraphInstrumentedTest {
         //Checks the button is there by clicking it
         onView(withId(R.id.averageSteps))
                 .perform(click());
+    }
+    @Test
+    public void exportTest() throws Exception{
+        //Checks the button is there by clicking it
+        onView(withId(R.id.exportBtn))
+                .perform(click());
+
+        //check to see if file was created by checking edit text
+        //onView(allOf(withId(R.id.graphTextView), withText("Brogan is cool"))).check(matches(isDisplayed()));
     }
     //Checks if specified string is one of the spinner's selections
     @Test
