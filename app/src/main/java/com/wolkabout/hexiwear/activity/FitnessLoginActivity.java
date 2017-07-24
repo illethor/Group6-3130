@@ -24,6 +24,7 @@ public class FitnessLoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
 
+
     // Declare variables
     private TextView txtEmail;
     private EditText txtPassword;
