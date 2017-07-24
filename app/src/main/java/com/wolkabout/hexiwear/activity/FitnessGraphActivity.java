@@ -12,6 +12,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -29,10 +30,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FitnessGraphActivity extends AppCompatActivity {
+    private FirebaseAuth mAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fitness_activity_graph);
+        mAuth = FirebaseAuth.getInstance();
         //Link graph object to graph
         final GraphView graph = (GraphView) findViewById(R.id.graph);
         //Declare ArrayLists that store workoutNames for the spinner and fitnessWorkoutObjects for workout data respectively.
@@ -47,9 +50,12 @@ public class FitnessGraphActivity extends AppCompatActivity {
         final TextView graphText = (TextView)findViewById(R.id.graphTextView);
         //Firebase
         FirebaseDatabase database = FirebaseDatabase.getInstance();
+        //Changed July 23, 9:40 am to access users/workouts/
         DatabaseReference dbRef = database.getReference();
+        String userEmail = mAuth.getCurrentUser().getEmail();
+        userEmail = cleanEmail(userEmail);
         //Obtains FitnessWorkout POJOs from database and stores them in an ArrayList<FitnessWorkout>
-        dbRef.child("workouts").addValueEventListener(new ValueEventListener() {
+        dbRef.child("users").child(userEmail).child("workouts").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Iterable<DataSnapshot> children = dataSnapshot.getChildren();
@@ -66,7 +72,7 @@ public class FitnessGraphActivity extends AppCompatActivity {
             public void onCancelled(DatabaseError databaseError) {
             }
         });
-        dbRef.child("workouts").addValueEventListener(new ValueEventListener() {
+        dbRef.child("users").child(userEmail).child("workouts").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Iterable<DataSnapshot> children = dataSnapshot.getChildren();
@@ -77,6 +83,14 @@ public class FitnessGraphActivity extends AppCompatActivity {
                 for (DataSnapshot child:children) {
                     String key = child.getKey();
                     workoutNames.add(key);
+                }
+
+                //July 23-10:30 am. The way workouts are now attributed and pushed to individual users causes naming convention issues. Using loop to iterate through
+                //list of workout names to appropriately change them.
+                int workoutNumber = 1;
+                for(int i=0;i<workoutNames.size();i++){
+                    workoutNames.set(i, "workout "+workoutNumber);
+                    workoutNumber++;
                 }
                 //Spinner stuff
                 ArrayAdapter<String> adapter = new ArrayAdapter<>(FitnessGraphActivity.this, android.R.layout.simple_spinner_item, workoutNames);
@@ -148,7 +162,7 @@ public class FitnessGraphActivity extends AppCompatActivity {
                         timeArray[0] = 0;
                         //+= 10 every next element of the array
                         for (int i = 1; i < stepIntArray.length-1; i++){
-                            timeArray[i] = timeArray[i-1]+10;
+                            timeArray[i] = timeArray[i-1]+5;
                         }
                         graph.removeAllSeries();
                         //Step button listener. When "STEPS" button is pressed, graphs steps over time of currently selected workout.
@@ -251,7 +265,6 @@ public class FitnessGraphActivity extends AppCompatActivity {
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
             }
         });
     }
@@ -261,6 +274,12 @@ public class FitnessGraphActivity extends AppCompatActivity {
      */
     public void graphToMain(View v) {
         startActivity(new Intent(FitnessGraphActivity.this, FitnessMainActivity.class));
+    }
+    /**
+     * Removes the dot from an email for database storage
+     * */
+    public String cleanEmail(String email){
+        return email.replaceAll("\\.","");
     }
 
     public static DataPoint[] generateData(int[] time, int[] steps){
