@@ -5,8 +5,10 @@ import android.os.SystemClock;
 import android.support.test.rule.ActivityTestRule;
 import android.view.WindowManager;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.wolkabout.hexiwear.activity.FitnessRegisterActivity;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -27,6 +29,12 @@ public class FitnessRegisterTests {
     @Rule
     public final ActivityTestRule<FitnessRegisterActivity> mActivityRule =
             new ActivityTestRule<>(FitnessRegisterActivity.class);
+
+    @After
+    public final void signoutAfter() {
+        FirebaseAuth.getInstance().signOut();
+        SystemClock.sleep(2000);
+    }
 
     @Before
     public void unlockScreen() {
