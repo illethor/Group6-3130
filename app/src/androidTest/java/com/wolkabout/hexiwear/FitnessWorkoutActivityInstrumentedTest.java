@@ -5,6 +5,8 @@ import android.provider.Settings;
 import android.support.test.rule.ActivityTestRule;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.wolkabout.hexiwear.activity.FitnessLoginActivity;
 import com.wolkabout.hexiwear.activity.FitnessWorkoutActivity;
 import com.wolkabout.hexiwear.activity.LoginActivity;
@@ -29,7 +31,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.hasToString;
 import static org.hamcrest.core.StringStartsWith.startsWith;
 
-public class FitnessWorkoutInstrumentedTest {
+public class FitnessWorkoutActivityInstrumentedTest {
 
     @Rule
     public final ActivityTestRule<FitnessLoginActivity> mActivityRule =
@@ -63,7 +65,7 @@ public class FitnessWorkoutInstrumentedTest {
         //Bounds
         onView(withId(R.id.etLowerBound))
                 .perform(click())
-                .perform(typeText("50"));
+                .perform(typeText("0"));
 
         SystemClock.sleep(200);
 
@@ -117,6 +119,14 @@ public class FitnessWorkoutInstrumentedTest {
                 .check(matches(withText(":")));
     }
 
+    @Test
+    public void testHr() {
+        onView(withId(R.id.tv_heartrate))
+                .check(matches(withText("Heartrate")));
+
+        onView(withId(R.id.tv_hrNum))
+                .check(matches(withText("0")));
+    }
 
     /**
      * Test start and stop buttons
@@ -130,5 +140,28 @@ public class FitnessWorkoutInstrumentedTest {
 
         onView(withId(R.id.Stop))
                 .perform(click());
+    }
+
+    /**
+     * Test start and stop buttons
+     */
+    @Test
+    public void testAlert() {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+        onView(withId(R.id.Start))
+                .perform(click());
+
+        SystemClock.sleep(2000);
+
+        DatabaseReference firebaseHrReferencee = database.getReference("HR");
+        firebaseHrReferencee.setValue("500 bpm");
+
+        SystemClock.sleep(2000);
+
+        onView(withId(android.R.id.button1)).perform(click());
+
+        SystemClock.sleep(2000);
+        firebaseHrReferencee.setValue("0 bpm");
     }
 }
