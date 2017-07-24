@@ -166,7 +166,7 @@ public class FitnessRegisterActivity extends AppCompatActivity {
     /**
      * Removes the dot from an email for database storage
      * */
-    public String cleanEmail(EditText email){
+    public static String cleanEmail(EditText email){
         return email.getText().toString().replaceAll("\\.","");
     }
 }

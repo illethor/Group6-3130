@@ -38,7 +38,7 @@ public class FitnessMainInstrumentedTest {
         onView(withId(R.id.txtPassword)).perform(typeText(password)).perform(closeSoftKeyboard());
         onView(withId(R.id.btnLogin)).perform(click());
         // Create a wait to avoid any race conditions
-        SystemClock.sleep(2000);
+        SystemClock.sleep(4000);
     }
 
     @After
@@ -54,6 +54,7 @@ public class FitnessMainInstrumentedTest {
     // Test Graph Button
     @Test
     public void graphTest() throws Exception{
+        SystemClock.sleep(1500);
         //Checks the button is there by clicking it
         onView(withId(R.id.graphsBtn))
                 .perform(click());

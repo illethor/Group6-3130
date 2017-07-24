@@ -8,6 +8,7 @@ import android.view.WindowManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.wolkabout.hexiwear.activity.FitnessLoginActivity;
 
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Rule;
@@ -27,6 +28,12 @@ public class FitnessLoginTests {
     @Rule
     public final ActivityTestRule<FitnessLoginActivity> mActivityRule =
             new ActivityTestRule<>(FitnessLoginActivity.class);
+
+    @After
+    public final void signoutAfter() {
+        FirebaseAuth.getInstance().signOut();
+        SystemClock.sleep(2000);
+    }
 
     @Before
     public void unlockScreen() {
@@ -91,8 +98,8 @@ public class FitnessLoginTests {
     @Test
     public void testSuccessfulLogin(){
         // Create valid login credentials for a dummy account
-        String email = "test@testuser.com";
-        String password = "testuser";
+        String email = "testathlete@test.com";
+        String password = "test123";
         // Attempt to login with them
         onView(withId(R.id.txtEmail)).perform(typeText(email)).perform(closeSoftKeyboard());
         onView(withId(R.id.txtPassword)).perform(typeText(password)).perform(closeSoftKeyboard());

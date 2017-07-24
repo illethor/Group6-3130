@@ -74,7 +74,7 @@ public class FitnessGraphInstrumentedTest {
     }
     @Test
     public void heartrateButtonTest() throws Exception{
-        SystemClock.sleep(2000);
+        SystemClock.sleep(4000);
         //Checks the button is there by clicking it
         onView(withId(R.id.heartrateGraphBtn))
                 .check(matches(isDisplayed()));

@@ -32,12 +32,7 @@ public class FitnessWorkoutActivity extends AppCompatActivity implements SensorE
     private DatabaseReference firebaseUserReference = database.getReference("users");
     private DatabaseReference firebaseCoachReference = database.getReference("users");
     private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener mAuthListener;
-    //references to workout objects
-    private DatabaseReference averageHrReference = database.getReference("workouts/workout 1/averageHeartrate");
-    private DatabaseReference stepsReference= database.getReference("workouts/workout 1/steps");
-    private DatabaseReference heartrateReference = database.getReference("workouts/workout 1/heartrate");
-    private DatabaseReference workoutTypeReference = database.getReference("workouts/workout 1/workoutType");
+    private DatabaseReference liveHrReference = database.getReference("HR");
 
     //workout object variables
     int hrUpperBound;
@@ -50,6 +45,7 @@ public class FitnessWorkoutActivity extends AppCompatActivity implements SensorE
 
     //step counter variables
     TextView tv_stepNum;
+    TextView tv_hrNum;
     SensorManager sensorManager;
     boolean running = false;
     int stepsTaken = -1;
@@ -66,6 +62,8 @@ public class FitnessWorkoutActivity extends AppCompatActivity implements SensorE
     public int counterM = 0;
     private boolean stopClicked = true;
     private int uploadCounter = 0;
+    private int currentHr = 0;
+    private String hrString = "";
 
     /**
      * Main method which sets up timer and step counter and their respective listeners
@@ -75,15 +73,25 @@ public class FitnessWorkoutActivity extends AppCompatActivity implements SensorE
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fitness_activity_timer);
+        final Context context = this;
+
+        /**UI Elements**/
         Start = (Button) findViewById(R.id.Start);
         Stop = (Button) findViewById(R.id.Stop);
         Stop.setVisibility(View.INVISIBLE);
         timeS = (TextView) findViewById(R.id.textViewS);
         timeM = (TextView) findViewById(R.id.textViewM);
+        tv_hrNum = (TextView) findViewById(R.id.tv_hrNum);
+
+        //Set ranges values
+        hrUpperBound = getIntent().getIntExtra("upperBound",  0);
+        hrLowerBound = getIntent().getIntExtra("lowerBound", 0);
+        workoutType = getIntent().getStringExtra("workoutType");
 
         // Initialize all firebase auth information
         mAuth = FirebaseAuth.getInstance();
         userEmail = mAuth.getCurrentUser().getEmail();
+
         // Constantly monitor the user to see if a message has appeared if it has display it and update coach alert field to true
         firebaseUserReference.child(cleanEmail(userEmail)).addValueEventListener(new ValueEventListener() {
             @Override
@@ -124,14 +132,44 @@ public class FitnessWorkoutActivity extends AppCompatActivity implements SensorE
             }
         });
 
+        //Heartrate and Alert Setup
+        liveHrReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+
+                // set title
+                alertDialogBuilder.setTitle("Heartrate Alert!");
+
+                // set dialog message
+                alertDialogBuilder
+                        .setMessage("Heartrate has fallen outside of specified range!").setCancelable(false)
+                        .setPositiveButton("OK",new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,int id) {
+                                // if this button is clicked, close
+                                // current activity
+                            }
+                        });
+
+                // create alert dialog and heartrate variables for testing
+                AlertDialog alertDialog = alertDialogBuilder.create();
+
+                String currentHrString = (String) snapshot.getValue();
+                String heartrateValue = currentHrString.split(" ")[0];
+                currentHr = Integer.parseInt(heartrateValue);
+                tv_hrNum.setText(String.valueOf(currentHr));
+
+                if((currentHr > hrUpperBound|| currentHr < hrLowerBound) && stopClicked==false)
+                    alertDialog.show();
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+
         // Step counter setup
         tv_stepNum = (TextView) findViewById(R.id.tv_stepNum);
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-
-        //setranges activity setup
-        hrUpperBound = getIntent().getIntExtra("upperBound",  0);
-        hrLowerBound = getIntent().getIntExtra("lowerBound", 0);
-        workoutType = getIntent().getStringExtra("workoutType");
 
         //set stop button status
         Stop.setOnClickListener(new OnClickListener() {
@@ -146,17 +184,35 @@ public class FitnessWorkoutActivity extends AppCompatActivity implements SensorE
                     stepsString = "0 ";
                 }
 
+                // heartrate push logic
+                int avgHr = 0;
+
+                if (!hrString.equals("")) {
+
+                    String[] allHr = hrString.split(" ");
+
+                    for (int i = 0; i < allHr.length; i++) {
+                        avgHr += Integer.parseInt(allHr[i]);
+                    }
+
+                    avgHr = avgHr / allHr.length;
+                }
+
+                //create workout object
+                FitnessWorkout workout = new FitnessWorkout(hrString, stepsString, workoutType, avgHr);
+
                 //push to db
-                workoutTypeReference.setValue(workoutType);
-                stepsReference.setValue(stepsString);
+                firebaseUserReference.child(cleanEmail(userEmail) + "/workouts").push().setValue(workout);
 
-                //put heartrate values here
 
+                DatabaseReference firebaseHrReferencee = database.getReference("HR");
+                firebaseHrReferencee.setValue("0 bpm");
                 // CLOSE OUT THIS ACTIVITY
                 finish();
             }
         });
 
+        //Start button logic
         Start.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -169,12 +225,14 @@ public class FitnessWorkoutActivity extends AppCompatActivity implements SensorE
                         uploadCounter++;
 
                         //Step counter upload
-                        if (uploadCounter % 15 == 0) {
+                        if (uploadCounter % 5 == 0) {
                             //adjust for initialized steps taken value of -1
                             if (stepsTaken < 0) {
                                 stepsTaken = 0;
                             }
                             stepsString += stepsTaken + " ";
+
+                            hrString += currentHr + " ";
                         }
 
                         if(stopClicked){
@@ -220,7 +278,9 @@ public class FitnessWorkoutActivity extends AppCompatActivity implements SensorE
         counterS = S;
     }
 
-    /** STEP COUNTER LOGIC**/
+    /**
+     * Step counter method
+     */
     @Override
     protected void onResume() {
         super.onResume();
@@ -269,7 +329,7 @@ public class FitnessWorkoutActivity extends AppCompatActivity implements SensorE
     /**
      * Removes the dot from an email for database storage
      * */
-    public String cleanEmail(String email){
+    public static String cleanEmail(String email){
         return email.replaceAll("\\.","");
     }
 }
