@@ -286,14 +286,12 @@ public class FitnessGraphActivity extends AppCompatActivity {
                                         filewriter.append(String.valueOf(stepIntArray[i]));
                                         filewriter.append("\n");
                                     }
-                                    //graphText.setText(workoutName+".csv succesfully created");
-                                    graphText.setText("Brogan is cool");
+                                    graphText.setText(workoutName+".csv succesfully created");
                                     filewriter.flush();
                                     filewriter.close();
 
                                 } catch (Exception e) {
-                                    //graphText.setText("Error in CsvFileWriter !!!");
-                                    graphText.setText("Brogan is cool");
+                                    graphText.setText("Error in CsvFileWriter !!!");
                                     e.printStackTrace();
                                 }
 

@@ -96,9 +96,6 @@ public class FitnessGraphInstrumentedTest {
         //Checks the button is there by clicking it
         onView(withId(R.id.exportBtn))
                 .perform(click());
-
-        //check to see if file was created by checking edit text
-        //onView(allOf(withId(R.id.graphTextView), withText("Brogan is cool"))).check(matches(isDisplayed()));
     }
     //Checks if specified string is one of the spinner's selections
     @Test
