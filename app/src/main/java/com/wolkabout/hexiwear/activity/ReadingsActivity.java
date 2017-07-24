@@ -170,6 +170,9 @@ public class ReadingsActivity extends AppCompatActivity implements ServiceConnec
         bluetoothService = binder.getService();
         if (!bluetoothService.isConnected()) {
             bluetoothService.startReading(device);
+
+            Intent intent = new Intent(this, FitnessLoginActivity.class);
+            startActivity(intent);
         }
         final Mode mode = bluetoothService.getCurrentMode();
         if (mode != null) {
