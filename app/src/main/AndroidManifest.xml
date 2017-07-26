@@ -93,7 +93,6 @@
         <activity android:name=".activity.FitnessMainActivity"/>
         <activity android:name=".activity.FitnessMessageActivity"
             android:exported="true"/>
-        <activity android:name=".activity.FitnessAlertActivity" />
         <activity android:name=".activity.FitnessWorkoutActivity"
             android:exported="true"/>
         <activity android:name=".activity.FitnessGraphActivity" />

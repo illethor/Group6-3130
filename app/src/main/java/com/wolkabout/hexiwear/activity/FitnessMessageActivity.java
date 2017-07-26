@@ -41,9 +41,10 @@ public class FitnessMessageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fitness_activity_message);
+
+        setTitle("Fitness Workout Application");
+
         // Initialize all firebase auth information
-
-
         // Hook up buttons / txt fields
         tvMessageSymbol = (TextView) findViewById(R.id.Message_symbol);
         tvMessageSendTo = (TextView) findViewById(R.id.Message_sendTo);

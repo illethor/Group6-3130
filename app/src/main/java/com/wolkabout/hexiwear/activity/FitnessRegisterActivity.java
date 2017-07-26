@@ -45,6 +45,8 @@ public class FitnessRegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fitness_activity_register);
 
+        setTitle("Fitness Workout Application");
+
         // Initialize all firebase auth information
         mAuth = FirebaseAuth.getInstance();
         mAuthListener = new FirebaseAuth.AuthStateListener() {

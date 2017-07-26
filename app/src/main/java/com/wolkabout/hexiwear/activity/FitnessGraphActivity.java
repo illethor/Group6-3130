@@ -37,6 +37,9 @@ public class FitnessGraphActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fitness_activity_graph);
+
+        setTitle("Fitness Workout Application");
+
         mAuth = FirebaseAuth.getInstance();
         //Link graph object to graph
         final GraphView graph = (GraphView) findViewById(R.id.graph);

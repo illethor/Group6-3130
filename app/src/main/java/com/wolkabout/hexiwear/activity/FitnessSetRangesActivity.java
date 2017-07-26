@@ -28,6 +28,8 @@ public class FitnessSetRangesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fitness_activity_set_ranges);
 
+        setTitle("Fitness Workout Application");
+
         Button btnApply = (Button) findViewById(R.id.btnApply);
         btnApply.setOnClickListener(new View.OnClickListener()   {
             public void onClick(View v)  {

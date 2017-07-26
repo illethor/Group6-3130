@@ -75,6 +75,8 @@ public class FitnessWorkoutActivity extends AppCompatActivity implements SensorE
         setContentView(R.layout.fitness_activity_timer);
         final Context context = this;
 
+        setTitle("Fitness Workout Application");
+
         /**UI Elements**/
         Start = (Button) findViewById(R.id.Start);
         Stop = (Button) findViewById(R.id.Stop);

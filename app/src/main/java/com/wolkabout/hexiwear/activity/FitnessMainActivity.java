@@ -25,7 +25,7 @@ public class FitnessMainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fitness_activity_main);
-        setTitle("FitnessWorkout Application: Iteration Two");
+        setTitle("Fitness Workout Application");
         final Button btnMessage = (Button) findViewById(R.id.btnMessage);
         final Button btnGraphs = (Button) findViewById(R.id.graphsBtn);
         final Button btnWorkout = (Button) findViewById(R.id.workoutBtn);
